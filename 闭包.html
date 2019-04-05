@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /* TODO 这里使用到了js处理单线程，事件放到队列中，当线程空闲时再处理队列的事情，使用闭包能够外部无法改变函数内部的数据 */
+  var flag = 10;
+  for(var i = 0;i < flag;i++ ){
+    setTimeout(function(){
+      console.log(i)// 输出 10个10
+    },10)
+  }  
+  for(var i = 0;i < flag;i++ ){
+    (
+      function(j){
+        setTimeout(
+          function(){
+            console.log(j) //输出 0123456789，因为使用了闭包
+          },10
+        )
+      }
+    )(i) 
+  }
+  </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+  var F = function() {};
+  Object.prototype.a = F;
+  Function.prototype.b = F;
+  var f = new Function();
+
+  var a = { n: 400};
+  var B = function() {
+     this.n = 9000 //this表示当前全局上下文
+  };
+  B.prototype = a;
+  var K = new B();
+  debugger;
+  console.log(K.n)  //9000
+  console.log(K.prototype.n)  //400
+  </script>
+</body>
+</html>
