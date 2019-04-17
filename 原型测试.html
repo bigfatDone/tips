@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+  function Person(name,name1) {
+  this.name = name
+  this.name1 = name1
+}
+Person.prototype.age = 18;
+
+var person = new Person('aaa')
+console.dir(person.prototype)
+console.dir(person)
+console.dir(person.__proto__.constructor)
+console.dir(person.constructor)
+console.dir(person.constructor === person.__proto__.constructor)//true
+console.dir(Person.prototype)
+console.log(Person.prototype===person.prototype) //false。person没有prototype
+  </script>
+</body>
+</html>

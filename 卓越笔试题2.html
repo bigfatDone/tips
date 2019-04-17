@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+  function Foo() {
+    getName = function() {
+      alert(1)
+    }
+    return this;
+  }
+
+  Foo.getName = function (){
+    alert('2')
+  }
+
+  var getName = function() {
+    alert('4')
+  }
+
+  function getName() {
+    alert('5')
+  }  
+  /* TODO 变量提升 */
+  function getName() {// 函数最高
+    alert('5')
+  } 
+  var getName;
+  getName = function() {
+    alert('4')
+  }
+
+  console.log(Foo.getName()) //2
+  console.log(getName()) //4
+  console.log(Foo().getName()) //1,Foo()返回window下的getName 为1
+  console.log(getName()) // 1
+  console.log(new Foo.getName()) //2
+  </script>
+</body>
+</html>

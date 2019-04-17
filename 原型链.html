@@ -9,6 +9,7 @@
 <body>
   
   <script>
+    var d = 1
   var F = function() {};
   Object.prototype.a = F;
   Function.prototype.b = F;
@@ -20,9 +21,13 @@
   };
   B.prototype = a;
   var K = new B();
-  debugger;
-  console.log(K.n)  //9000
-  console.log(K.prototype.n)  //400
+  console.log(K.n);  //9000
+  // console.dir(K._proto_.n)  //400
+  // console.log(Object.prototype.toString.call(f))
+  function fn(){
+    console.log('test')
+    };
+console.log(Object.prototype.toString.call(d));//”[object Function]”
   </script>
 </body>
 </html>
