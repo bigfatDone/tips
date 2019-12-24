@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        Function.prototype.myapply = function(context) {
+            if(typeof context !== 'function'){ // 判断当前this是否指向当前上下文
+                throw TypeError('error')
+            }
+            context = context || window; // 当前上下文指向函数或者window
+            context.fn = this; // 给当前添加属性fn，并且该属性为调用的函数
+            let resurlt;
+            if(arguments[1]){ // 判断apply是否有参数
+                resurlt = context.fn(...arguments[1])
+            }else {
+                resurlt = context.fn()
+            }
+            delete context.fn; // 删除原型链上的fn属性
+            return resurlt;
+        }
+    </script>
+</body>
+</html>

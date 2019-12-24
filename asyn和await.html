@@ -8,22 +8,15 @@
 </head>
 <body>
   <script>
-    let handler = {
-    get: function(target, name){
+    let a = 1;
+    async function test() {
       debugger
-        return name in target ? target[name] : 37;
-    }
-};
-
-let p = new Proxy({}, handler);
-
-p.a = 1;
-p.b = undefined;
-p.c = 8;
-
-console.log(p.a, p.b);    // 1, undefined
-
-console.log('c' in p, p.c);    // false, 37
+      a =  a +  10;
+      await console.log(a+ ' ' + 'a')
+    }  
+    test()
+    a ++ ;
+    console.log(a)
   </script>
 </body>
 </html>
