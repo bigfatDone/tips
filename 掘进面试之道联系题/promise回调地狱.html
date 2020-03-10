@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+      // 定时器嵌套
+  function f1() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(111), 1000);
+    }).then(data => console.log(data));
+  }
+  function f2() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(222), 1000);
+    }).then(data => console.log(data));;
+  }
+  function f3() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(333), 1000);
+    }).then(data => console.log(data));;
+  }
+  function f4() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(444), 1000);
+    }).then(data => console.log(data));;
+  }
+
+  async function timeoutFn() { // async实质上是new Promise; await实质上是then的操作，并且还是resolve状态
+    //  f1(); // 同时进行异步函数
+    //  f2(); // 同时进行异步函数
+    //  f3(); // 同时进行异步函数
+    //  f4(); // 同时进行异步函数
+    await f1(); // 开始执行第一个异步函数
+    await f2(); // 第一个执行完，开始执行第二个异步函数
+    await f3(); // 第二个执行完，开始执行第三个异步函数
+    await f4(); // 第三个执行完，开始执行第四个异步函数
+  }
+  // let timeoutFn =  new Promise();
+  //   timeoutFn().then(()=> {
+  //     return f1()
+  //   }).then(() => {
+  //     return f2()
+  //   }).then(() => {
+  //     return f3()
+  //   }).then(() => {
+  //     return f4()
+  //   }).then(() => {
+      
+  //   })
+
+  timeoutFn();
+  </script>
+</body>
+</html>

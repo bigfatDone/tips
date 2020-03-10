@@ -7,23 +7,18 @@
   <title>Document</title>
 </head>
 <body>
-  <script>
-    let handler = {
-    get: function(target, name){
-      debugger
-        return name in target ? target[name] : 37;
-    }
-};
-
-let p = new Proxy({}, handler);
-
-p.a = 1;
-p.b = undefined;
-p.c = 8;
-
-console.log(p.a, p.b);    // 1, undefined
-
-console.log('c' in p, p.c);    // false, 37
-  </script>
+  <ul id="ul">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+</ul>
+<script>
+    let ul = document.querySelector('#ul')
+    ul.addEventListener('click', (event) => {
+        debugger
+    })
+</script>
 </body>
 </html>
