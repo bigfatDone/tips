@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1rem适配</title>
+  <style type="text/css">
+    .box {
+      height: 1rem;
+      width: 1rem;
+      background-color: red;  
+    }
+  </style>
+</head>
+<body>
+  <script>
+    window.onload = function() {
+      var width = document.documentElement.clientWidth; // 屏幕宽度
+      var node = document.querySelector('html');
+      node.style.fontSize = (width / 750) + 'px'; // 这个是标准的750px设计图，将整个屏幕分成750份
+    }
+  </script>
+  <div class="box"></div>
+</body>
+</html>
