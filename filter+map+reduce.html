@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    let arr = [1, 2, 3];
+    let arrFilter = arr.filter(v => v != 1); // [2,3] (当前项，下标，数组)
+    let arrMap = arr.map(v => v + 1) // [2,3,4] (当前项，下标，数组)
+    let arrReduce = arr.reduce((acc, current) => { // [] --> 第一个，默认参数，（累计参数，当前项，下标，数组）
+      acc.push(current * 2)
+      return acc
+    }, []) // [2,4,6]
+    debugger
+  </script>
+</body>
+
+</html>

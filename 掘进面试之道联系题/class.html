@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // class的使用方式
+  class Person {
+    constructor(props) { // 构造函数相当于一个function里面的东西
+      this.name =  props.name;
+      this.age = props.age;
+      this.say = function() { // function里面的一个方法
+        console.log(222)
+      }
+    }
+    child() { // 方法里面的prototype里面的function
+      console.log(33)
+    }
+  }
+// function的使用方式
+  function toFunc(props) {
+    let name = props.name
+    let age = props.age
+    let say = function(){
+      console.log(444)
+    }
+  }
+  toFunc.prototype.child = function() {
+    console.log(555)
+  }
+  let person = new Person({name:'ys',age:'18'})
+  let toF = new toFunc({name:'ys',age:'18'})
+  console.log(person)
+  console.log(toF)
+  </script>
+</body>
+</html>

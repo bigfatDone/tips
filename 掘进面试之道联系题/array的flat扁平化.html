@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+  let arr = [1,2,[21,22,[31,32]]]
+  // let arrTotal = new Array();
+  // let flat = arr.map(item => {
+  //   if(typeof item != 'object'){
+  //     arrTotal.push(item)
+  //     return item
+  //   }else if(item instanceof Array){
+  //     return item.map(item1 => {
+  //       arrTotal.push(item1)
+  //       return item1;
+  //     })
+  //   }
+  // })
+  // console.log(arrTotal)
+
+  // let reduce = arr => { // 多层函数扁平化
+  //   return arr.reduce((pre,cur) => {
+  //     return pre.concat(Array.isArray(cur) ? reduce(cur) : cur) // 这个是使用递归的思想
+  //   },[])
+  // }
+  // console.log(reduce(arr))
+
+  let reduce = (arr,num) => { // 多层函数扁平化
+    return arr.reduce((pre,cur) => {
+      if(num > 1){
+        return pre.concat(Array.isArray(cur) ? reduce(cur,num-1) : cur) // 这个是使用递归的思想
+      }else {
+        return pre.concat(cur)
+      }
+    },[])
+  }
+  console.log(reduce(arr,1))
+  </script>
+</body>
+</html>
