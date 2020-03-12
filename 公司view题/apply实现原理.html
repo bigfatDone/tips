@@ -9,13 +9,12 @@
 <body>
     <script>
         Function.prototype.myapply = function(context) {
-            if(typeof context !== 'function'){ // 判断当前this是否指向当前上下文
-                throw TypeError('error')
-            }
+            debugger
             context = context || window; // 当前上下文指向函数或者window
             context.fn = this; // 给当前添加属性fn，并且该属性为调用的函数
             let resurlt;
-            if(arguments[1]){ // 判断apply是否有参数
+            // 判断存储是否有第二个参数，如果有第二个参数就将其展开
+            if(arguments[1]){ // 判断apply是否有参数（第二个参数）
                 resurlt = context.fn(...arguments[1])
             }else {
                 resurlt = context.fn()
@@ -23,6 +22,18 @@
             delete context.fn; // 删除原型链上的fn属性
             return resurlt;
         }
+        let name = 'ys';
+        let age = '18';
+        let obj = {
+            name: 'xiaoli',
+            myF: function(name,age) {
+                console.log(this)
+                console.log(name +'---' + age)
+            }
+        }
+        let myobj = [12,78]
+        obj.myF(1,2) // {name: "xiaoli", myF: ƒ}  this指向obj
+        obj.myF.myapply(this,myobj) // Window {parent: Window, postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, …}  this指向window
     </script>
 </body>
 </html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    Function.prototype.mybind = function(context) {
+      if(typeof this !== 'function'){
+        throw new TypeError('error')
+      }
+      var args = arguments.slice(1);
+      var _this = this;
+      return function F() {
+        if(this instanceof F){ // this 是F的实例化对象，直接返回new 一个对象
+          return new _this(args,...arguments)
+        }
+        return _this.apply(context,args.concat(...arguments)) // 这个是this不指向指定函数，所以需要apply绑定修改this
+      }
+    }
+  </script>
+</body>
+</html>

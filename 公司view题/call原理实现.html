@@ -11,9 +11,6 @@
 <body>
     <script>
         Function.prototype.mycall = function(context){
-            if(typeof this !== 'function'){ // 判断函数内部的this指向
-                throw TypeError('error')
-            }
             context = context || window; // 当前上下文的指向
             context.fn = this; // 给context创建一个fn属性，并且该属性为调用的函数
             const args = [...arguments].slice(1);// 传入的参数
