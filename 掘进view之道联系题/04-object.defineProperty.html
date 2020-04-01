@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="test"></div>
+  <script>
+    // var data ={name:'ys'};
+    // observe(data);
+    // let name = data.name; // get value
+    // data.name = 'bigfat' // set value
+    // 解耦数据
+    class Dep {
+      constructor() {
+        this.subs = []
+      }
+      addSub(value) {
+        this.subs.push(value)
+      }
+      notify() {
+        this.subs.forEach(item => {
+          item.update()
+        })
+      }
+    }
+    Dep.target = null;
+    class Wacher{
+      constructor(obj,key,cb){
+        Dep.target = this; // 将整个Wacher的this指向Dep.target
+        debugger
+        this.obj = obj;
+        this.key = key;
+        this.cb = cb;
+        this.value = this.obj[this.key];
+        Dep.target = null
+      }
+      update(){
+        this.value = this.obj[this.key]
+        this.cb(this.value) // 派发更新的回调函数
+      }
+    }
+    function observe(obj) {
+      if(!obj || typeof obj !== 'object'){
+        return
+      }
+      Object.keys(obj).forEach(key => {
+        defineReactive(obj,key,obj[key])
+      })
+    }
+
+   function defineReactive(obj,key,value){
+      //  递归子属性
+      observe(value)
+      var dp = new Dep();
+      Object.defineProperty(obj,key,{
+        // 获取数据
+        get: function() {
+          console.log('get value')
+          if(Dep.target){
+            debugger
+            dp.addSub(Dep.target)
+          }
+          return value
+        },
+        // 设置数据
+        set: function(newval){
+          console.log('set value')
+          value = newval;
+          dp.notify()
+        }
+      })
+    }
+
+    var data = {name: 'ys'};
+    // 收集依赖的数据
+    observe(data);
+    function update(value){
+      document.getElementById('test').innerText = value;
+    }
+    // 模拟数据进行派发更新
+    new Wacher(data,'name',update)
+    data.name = 'bigfat'
+  </script>
+</body>
+</html>

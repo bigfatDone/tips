@@ -9,21 +9,20 @@
 <body>
   <button onclick="promise()">button</button>
 
-
-
-
   <script>
      function promise() {
-  let promise  = new Promise(function(resolve,reject){
-    console.log('enter promise')
-    resolve('test');
-    reject('error');
-  });
-  promise.then(function(a){
-    console.log(a);
-  },function(b){
-    console.log(b)
-  })}
+      let promise  = function(resolve,reject){
+        console.log('enter promise')
+        return resolve('success');
+        return reject('error');
+      }
+
+      promise(a => {
+        console.log(a);
+      },b =>{
+        console.log(b)
+      })
+    }
   </script>
 </body>
 </html>

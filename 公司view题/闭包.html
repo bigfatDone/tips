@@ -7,6 +7,7 @@
   <title>Document</title>
 </head>
 <body>
+  <button id="cli">点击</button>
   <script>
     /* TODO 这里使用到了js处理单线程，事件放到队列中，当线程空闲时再处理队列的事情，使用闭包能够外部无法改变函数内部的数据 */
   var flag = 10;
@@ -26,6 +27,22 @@
       }
     )(i) 
   }
+
+  // 测试闭包里面的变量
+  // window.onload = function() {
+  //   var id = document.getElementById('cli')
+  //   function test() {
+  //     var a = 1;
+  //     return function() {
+  //       a++;
+  //       console.log(a)
+  //     }
+  //   }
+  //   // id.addEventListener('click',test())
+  //   id.onclick =test();
+
+  // }
+
   </script>
 </body>
 </html>

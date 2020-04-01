@@ -11,6 +11,7 @@
       function debounce(fn,wait){
       var timer = null;
       return function(){
+        debugger
           if(timer !== null){
               clearTimeout(timer);
           }
