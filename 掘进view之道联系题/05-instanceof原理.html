@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function myInstanceof(L, R) { // 主要通過原型链来对比
+    let O = R.prototype; 
+    let P = L.__proto__;
+    while (true) {
+        if(P === O){
+            return true;
+        }
+        if(P === null){ // 循环，直到顶部object，object.__proto__为null
+            return false;
+        }
+        P = P.__proto__; // 在隐性原型链寻找
+    }
+}
+function test() {
+  console.log(333)
+}
+var t = new test(); // 这里已经是自执行了的
+console.dir(myInstanceof(t,test))
+  </script>
+</body>
+</html>
