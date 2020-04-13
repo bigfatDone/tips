@@ -8,6 +8,7 @@
 </head>
 <body>
   <script>
+    //  this 的指向，谁调用，指向谁
     var name = 222;
    var a = {
      name:111,
@@ -15,18 +16,20 @@
        console.log(this.name);
      }
    }
-   var fun = a.say;
-   fun()
-   a.say()
+   var fun = a.say; // 声明的fun为全局
+   fun() // this指向全局  222
+   a.say() // a调用，this指向a内部 111 
    var b = {
      name:333,
      say:function(fun){
         fun()
      }
    }
-   b.say(a.say)
-   b.say = a.say
-   b.say()
+   b.say(a.say) // var fun = a.say; // 声明的fun为全局  和这个类似，声明内部全局函数
+   b.say = a.say // this指向b的内部
+   b.say() // 指向于b 333
+//  (从堆栈的地址放心出发)   
+// 222 111 222 333
   </script>
 </body>
 </html>

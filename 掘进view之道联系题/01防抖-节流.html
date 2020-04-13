@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    window.onload = function() {
+      function debounce(fn,wait){
+        var timer = null;
+        return function(){
+          // if(timer !== null){ // 防抖
+          //   clearTimeout(timer);
+          // }
+          // timer = setTimeout(fn,wait);
+          if(timer == null){ // 节流
+            timer = setTimeout(() => {
+              fn(),
+              timer = null
+            },wait);
+          }
+        }
+      }
+        
+      function handle(){
+        console.log(Math.random());
+      }
+        
+      window.addEventListener("click",debounce(handle,500));
+    }
+  </script>
+</body>
+</html>
