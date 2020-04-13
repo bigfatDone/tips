@@ -8,6 +8,7 @@
 <body>
   <script>
     Function.prototype.mybind = function(context) {
+      
       if(typeof this !== 'function'){
         throw new TypeError('error')
       }

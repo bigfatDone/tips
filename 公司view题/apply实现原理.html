@@ -9,9 +9,8 @@
 <body>
     <script>
         Function.prototype.myapply = function(context) {
-            debugger
             context = context || window; // 当前上下文指向函数或者window
-            context.fn = this; // 给当前添加属性fn，并且该属性为调用的函数
+            context.fn = this; // 给当前添加属性fn，并且该属性为调用的函数，那么this就是指向当前的调用函数
             let resurlt;
             // 判断存储是否有第二个参数，如果有第二个参数就将其展开
             if(arguments[1]){ // 判断apply是否有参数（第二个参数）
@@ -34,6 +33,7 @@
         let myobj = [12,78]
         obj.myF(1,2) // {name: "xiaoli", myF: ƒ}  this指向obj
         obj.myF.myapply(this,myobj) // Window {parent: Window, postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, …}  this指向window
+
     </script>
 </body>
 </html>
