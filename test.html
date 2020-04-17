@@ -8,9 +8,20 @@
   <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 <script>
   $(document).ready(function() {
-    $.ajax({
-      
-    })
+    async function test() {
+      console.log(1)
+
+      let b = await test1() // 这边接受的是resolve参数，或者是reject参数 
+      console.log(3)
+
+      console.log(b) // 22
+    }
+    function test1(){
+      return  new Promise(resolve =>{
+        resolve(22)
+      })
+    }
+    test()
   })
 </script>
 </head>

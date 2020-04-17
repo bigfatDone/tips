@@ -49,7 +49,7 @@
       Object.keys(obj).forEach(key => {
         defineReactive(obj,key,obj[key])
       })
-    } 
+    }
 
    function defineReactive(obj,key,value){
       //  递归子属性
@@ -58,7 +58,7 @@
       Object.defineProperty(obj,key,{
         // 获取数据
         get: function() {
-          console.log('get value') i
+          console.log('get value')
           if(Dep.target){
             debugger
             dp.addSub(Dep.target)
