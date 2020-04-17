@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class Stack {
+            constructor() {
+                this.stack = []
+            }
+            push(item) {
+                this.stack.push(item)
+            }
+            pop(item) {
+                this.stack.pop();
+            }
+            peek(){
+                return this.stack[this.getLength()-1];
+            }
+            getLength() {
+                return this.stack.length
+            }
+            isEmpty() {
+                return this.stack.length == 0 ? true : false;
+            }
+        }
+        Stack.target = null
+        var stack = new Stack();
+        debugger
+    </script>
+</body>
+</html>
