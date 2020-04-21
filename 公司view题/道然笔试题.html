@@ -12,7 +12,7 @@
     console.log(o);
     return {
       foo(m) {
-    return fn(m,n)
+    return fn(m,n) 
       }
     }
   }
@@ -22,8 +22,8 @@
    */
   var a = fn(0) //fn(0) 这个是已经执行了，将返回值赋给了a   -----undefined
   a.foo(1) // -----0
-  a.foo(2) // -----1
-  a.foo(3) // -----2
+  a.foo(2) // -----0
+  a.foo(3) // -----0 
 
   var b = fn(0).foo(1).foo(2).foo(3) // -----undefined 0 1 2 
   var c = fn(0).foo(1) // -----undefined 0

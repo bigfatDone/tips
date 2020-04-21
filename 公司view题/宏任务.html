@@ -8,23 +8,19 @@
 </head>
 <body>
   <script>
-//   console.log('start');
-// setTimeout(() => {
-//   console.log('timeout');
-// });
-// let promise = new Promise((resolve,reject) => {
-//   console.log(111) // 这个也是执行栈
-//   resolve('hello')
-// })
-// promise.then((resolve) => {
-//   console.log(resolve);
-// });
-// console.log('end');
-function test() {
-  console.log(22)
-}
-test()
-console.log(111)
+  console.log('start');
+  setTimeout(() => {
+    console.log('timeout');
+  });
+  let promise = new Promise((resolve,reject) => {
+    console.log(111) // 这个也是执行栈,正常执行
+    resolve('hello')
+  })
+  promise.then((resolve) => {
+    console.log(resolve);
+  });
+  console.log('end');
+
   </script>
 </body>
 </html>
