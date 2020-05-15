@@ -8,19 +8,14 @@
 </head>
 <body>
   <script>
-  console.log('start');
-  setTimeout(() => {
-    console.log('timeout');
-  });
-  let promise = new Promise((resolve,reject) => {
-    console.log(111) // 这个也是执行栈,正常执行
-    resolve('hello')
-  })
-  promise.then((resolve) => {
-    console.log(resolve);
-  });
-  console.log('end');
-
+  let a = 0
+let b = async () => {
+  a = a + await 10
+  console.log('2', a) // -> '2' 10
+}
+b()
+a++
+console.log('1', a) // -> '1' 1
   </script>
 </body>
 </html>

@@ -16,15 +16,15 @@ teacher.prototype.sayName = function(){
     console.log("name is "+this.name);
 }
 var teacher1 = new teacher("xiaoming");
-teacher1.sayName();
+teacher1.sayName(); // new对象，this绑定到对象实例上面
  
 function student(name){
     this.name = name;
 }
 student.prototype = new teacher()
 var student1 = new student("xiaolan");
-student1.sayName()
-teacher1.sayName();
+student1.sayName() // new对象，this绑定到对象实例上面
+teacher1.sayName(); // new对象，this绑定到对象实例上面
   </script>
 </body>
 </html>

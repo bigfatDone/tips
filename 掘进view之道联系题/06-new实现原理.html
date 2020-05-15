@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    
+    // 1. 创建新的对象
+    // 2. 链接到原型里面
+    // 3. 绑定this
+    // 4. 返回新建的对象
+    function myNew(fn,...arg){
+      let instance = Object.create(fn); // 通过create新建对象（这里实现继承）
+      let result = instance.call(fn,...arg) // 改变this的指向 （这里实现绑定this）
+      return typeof result == 'object' ? result : instance; // fn为对象返回对象，fn为function返回新建函数
+    }
+  </script>
+</body>
+</html>
