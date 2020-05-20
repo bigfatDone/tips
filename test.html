@@ -12,17 +12,35 @@
   console.log(decodeURI(url))
 </script>
 </head>
+<style>
+.line {
+  height: 0px;
+  width: 0px;
+  border-left: 40px solid transparent;
+  border-right: 40px solid transparent;
+  border-bottom: 40px solid transparent;
+  border-top: 40px solid red;
+}
+</style>
 <body>
   <div class="box">
     <div class="box-left" onclick="test()">anniu</div>
     <br>
   </div>
+  <div class="line"></div>
   <script>
-    let arr = [12]
-    arr.a = 12
-    console.log(arr)
-    delete arr.a
-    console.log(arr)
+    // // 替换千分位
+    // let str = '123456789'
+    // let reg = /(\d{3})/g
+    // let str1 = str.split('').reverse().join('').replace(reg,'$1,')
+    // // let a = str.replace(reg,'$1,')
+    // let str2 = str1.split('').reverse().join('')
+    // let str3 = str2.replace(/(^\,)|(\,$)/,'')
+    // console.log(str1)
+    // console.log(str2)
+    // console.log(str3)
+
+    
   </script>
 </body>
 </html>

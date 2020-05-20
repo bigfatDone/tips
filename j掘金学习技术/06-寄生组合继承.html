@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 寄生组合继承
+    function Father(value) {
+      this.value = value
+    }
+    Father.prototype.getValue = function() {
+      console.log(this.value)
+    }
+
+    function Chlid(value) {
+      Father.call(this,value)
+    }
+    Chlid.prototype = Object.create(Father.prototype)
+    let child = new Chlid('ys')
+    child.getValue();
+  </script>
+</body>
+</html>
