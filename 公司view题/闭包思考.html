@@ -22,14 +22,14 @@
         };
       }
     };
-    console.log(object.getNameFunc()()+"111"); //The  Window,作用域的问题
+    // console.log(object.getNameFunc()()+"111"); //The  Window,作用域的问题
+    // object.getNameFunc()()
+    // var fn = object.getNameFunc;
+    // fn(); 
+    // console.dir(fn()())//The  Window
+    // console.dir(fn())//函数 function() {return this.name;}
 
-    var fn = object.getNameFunc();
-    fn(); 
-    console.dir(fn()())//The  Window
-    console.dir(fn())//函数 function() {return this.name;}
-
-
+/**
     // 思考2：
     var name = "The Window";
     var object = {
@@ -43,6 +43,7 @@
     };
     console.log(object.getNameFunc()());//My Object
     console.log(object.getNameFunc());//function() {return that.name;}
+    */
   </script>
 </body>
 

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    let promise1 = new Promise((resolve,reject) => { //里面参数接受的是一个fn
+      resolve('woshi promise1')
+    })
+    let promise2 = new Promise((resolve,reject) => {
+      reject('woshi resolve1')
+    })
+    let promise3 = new Promise((resolve,reject) => {
+      reject('woshi resolve2')
+    })
+    let promise4 = Promise.reject('ddddd')
+    Promise.all([promise1,promise2,promise3,promise4]).then(data => {
+      console.log(data)
+      console.log('111')
+    },date => {
+      console.log(date+'888')
+    }).catch(e => {
+      console.log(e)
+    })
+    // 总结：（promise.all里面会并发执行的，但是会顺序返回）
+    // 1. promise.all会将顺序加入的promise对象会顺序的在then参数里面顺序的返回
+    // 2. promise.all里面第一个reject的对象会在catch里面输出，有且只输出第一个reject,一般在then里面第二参数就是reject，但是只输出第一个reject，
+    // 3. promise.all出错的话可以通过catch来捕获错误 （reject的状态then里面没有第二个参数，那么就会放到catch里面，但也只输出第一个）
+  </script>
+</body>
+</html>

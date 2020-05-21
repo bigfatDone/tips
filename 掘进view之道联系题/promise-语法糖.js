@@ -4,6 +4,8 @@ new Promise((resoleve,reject) => {
   })
 }).then(data => {
   console.log(data)
+},data1 => {
+  console.log(data1)
 }).catch(e => {
   console.log('catch e:'+e)
 })
