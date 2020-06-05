@@ -60,7 +60,7 @@ let obj = { // 对象
     age: 18
   }
 }
-
+// 但是对于undefined symbol function 都会自动的忽略掉
 function change(param) {
   let obj1 = JSON.parse(JSON.stringify(param)); // 空对象
   console.log(obj1) // { name: 'father', person: { name: 'son', age: 18 } }

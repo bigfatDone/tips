@@ -6,6 +6,26 @@
   <title>Document</title>
 </head>
 <body>
-  
+  <script>
+    class Father {
+      constructor(){
+        this.name = 'ys'
+        this.age = 18
+      }
+      say() {
+        console.log('say:' + this.name)
+      }
+    }
+
+    class Child extends Father {
+      constructor(name, age){
+        super()
+        this.name1 = name;
+        this.age1 = age
+      }
+    }
+    let me = new Child('bigfat',18)
+    console.dir(me)
+  </script>
 </body>
 </html>

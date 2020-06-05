@@ -25,7 +25,7 @@
         fun()
      }
    }
-   b.say(a.say) // var fun = a.say; // 声明的fun为全局  和这个类似，声明内部全局函数
+   b.say(a.say) // var fun = a.say; // 声明的fun为全局  和这个类似，声明内部全局函数，函数参数声明为全局
    b.say = a.say // this指向b的内部
    b.say() // 指向于b 333
 //  (从堆栈的地址放心出发)   
