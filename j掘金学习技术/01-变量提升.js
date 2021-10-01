@@ -13,4 +13,4 @@ function f1(num,num1) { // 传参这里说明了的
 f1(num1,num2)
 console.log(num1)
 console.log(num2)
-console.log(num)
+// console.log(num)

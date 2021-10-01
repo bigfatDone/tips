@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    let arr = [12,15,19]
+    let some = arr.some(item => { // 返回值为true or false
+      return item < 19
+    })
+    console.log(some) // true
+
+    let every = arr.every(item => { // 全部满足条件才返回true，不然false
+      return item > 15
+    })
+    console.log(every) // false
+
+    let find = arr.find(item => { // 返回第一个判断为true的值
+      return item > 19
+    })
+    console.log(find) // 15(没有返回undefined)
+  </script>
+</body>
+</html>

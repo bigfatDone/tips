@@ -10,7 +10,7 @@
   <script>
   let a = 0
 let b = async () => {
-  a = a + await 10
+  a = a + await 10 // 下面的都变成了微任务，等待同步任务的执行
   console.log('2', a) // -> '2' 10
 }
 b()

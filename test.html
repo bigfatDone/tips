@@ -70,6 +70,17 @@
     test.onclick = function(e) {
       console.log(9999)
     }
+    // 作用域在编译的时候就已经确定了
+    function foo() {
+      console.log(b) // 这个b是全局作用域下
+    }
+    function foo1() {
+      let b = 2; // 这个b是函数作用域内的
+      foo()
+    }
+    let b = 200;
+    foo1() // 200
+    
   </script>
 </body>
 </html>

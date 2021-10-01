@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /**
+     * 实现find ---------------------------------------
+    */
+
+    let arrFind = [12,15,19]
+
+    Array.prototype.myFind = function(fn) { //必须使用function不能使用箭头函数，this指向调用的数组
+     if(typeof fn != 'function'){
+       throw TypeError('err function')
+     }
+     for(let i = 0; i < this.length; i++){
+       if(fn(this[i])){
+         return this[i]
+       }
+     }
+     return undefined // 没有匹配则返回undefined
+   }
+   
+   let find = arrFind.myFind(item => { // 返回第一个判断为true的值
+      return item > 12
+    })
+    console.log('find:'+find) // find:15
+    /**
+     * 实现findIndex ---------------------------------------
+    */
+
+    let arrFindIndex = [12,15,19]
+
+    Array.prototype.myFindIndex = function(fn) { //必须使用function不能使用箭头函数，this指向调用的数组
+     if(typeof fn != 'function'){
+       throw TypeError('err function')
+     }
+     for(let i = 0; i < this.length; i++){
+       if(fn(this[i])){
+         return i
+       }
+     }
+     return undefined // 没有匹配则返回undefined
+   }
+   
+   let findIndex = arrFindIndex.myFindIndex(item => { // 返回第一个判断为true的值
+      return item > 12
+    })
+    console.log('findIndex:'+findIndex) // findIndex:1
+
+    /**
+     * 实现some ---------------------------------------
+    */
+
+    let arrSome = [12,15,19]
+
+    Array.prototype.mySome = function(fn) {
+      if(typeof fn != 'function'){
+        throw new TypeError(`error ${fn} no a function `)
+      }
+      for (let i = 0; i < this.length; i++) {
+        if(fn(this[i])){
+          return true
+        }
+      }
+      return false
+    }
+
+    let some = arrSome.mySome(item => {
+      return item > 19 
+    })
+    console.log('some:'+some) // some:false
+
+    /**
+     * 实现every ---------------------------------------
+    */
+
+    
+    let arrEvery = [12,15,19]
+
+    Array.prototype.myEvery = function(fn) {
+      if(typeof fn != 'function'){
+        throw new TypeError(`error ${fn} no a function `)
+      }
+      for (let i = 0; i < this.length; i++) {
+        if(!fn(this[i])){
+          return false
+        }
+      }
+      return true
+    }
+
+    let every = arrEvery.myEvery(item => {
+      return item > 19 
+    })
+    console.log('every:'+every) // every:false
+
+    /**
+     * 实现map ---------------------------------------
+    */
+
+    let arrMap = [12,15,19]
+
+    Array.prototype.myMap = function(fn) {
+      if(typeof fn != 'function'){
+        throw new TypeError(`error ${fn} no a function `)
+      }
+      let arrayData = []
+      for (let i = 0; i < this.length; i++) {
+        if(fn(this[i])){
+          arrayData.push(fn(this[i]))
+        }
+      }
+      return arrayData;
+    }
+
+   let map = arrMap.map(item => {
+     item += 3;
+     return item + 'map'
+   })
+   console.log('map:'+map) // map:15map,18map,22map
+
+    /**
+     * 实现filter ---------------------------------------
+    */
+
+    let arrFilter = [12,15,19]
+
+    Array.prototype.myFilter = function(fn) {
+      if(typeof fn != 'function'){
+        throw new TypeError(`error ${fn} no a function `)
+      }
+      let arrayData = []
+      for (let i = 0; i < this.length; i++) {
+        if(fn(this[i])){
+          arrayData.push(this[i])
+        }
+      }
+      return arrayData;
+    }
+
+   let filter = arrFilter.myFilter(item => {
+     return item > 12
+   })
+   console.log('filter:'+filter) // filter:15,19
+
+   /**
+    * 实现reduce
+   */
+   let arrReduce = [12,15,19]
+
+   Array.prototype.myReduce = function(fn,obj) {
+    if(typeof fn != 'function'){
+      throw new TypeError(`error ${fn} no a function `)
+    }
+    for (let i = 0; i < this.length; i++) {
+        obj = fn(obj,this[i])
+    }
+    return obj
+   }
+
+   let reduce = arrReduce.myReduce((pre,item) => {
+    pre = pre + item
+     return pre
+   },0)
+   console.log('reduce:'+reduce) // reduce:46
+  </script>
+</body>
+</html>
