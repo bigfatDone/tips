@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    let data = 
+    {
+      name: 'ys',
+      children:
+      [{
+        name: '1-1',
+        children: [{
+          name: '1-1-1',
+          children: [{
+            name: '1-1-1-1',
+            children: undefined
+          }]
+          },{
+          name: '1-1-2',
+          children: [{
+            name: '1-1-2-1',
+            children: undefined
+          }]
+          },{
+          name: '1-1-3',
+          children: [{
+            name: '1-1-3-1',
+            children: undefined
+          }],
+        }]
+        },{
+        name: '1-2',
+        children: [{
+          name: '1-2-1',
+          children: [{
+            name: '1-2-1-1',
+            children:undefined
+          }]
+        }]
+      }]
+    }
+    // 按深度查找数据
+    let arr1 = []
+    function deep(data) {
+      arr1.push(data.name)
+      if(data.children){
+        for(let i =0; i < data.children.length; i++){
+          if(data.children[i].children){
+            deep(data.children[i])
+          }else {
+            arr1.push(data.children[i].name)
+          }
+        }
+      }
+    }
+    deep(data)
+    console.log(arr1)
+
+    // 按广度查找数据
+    let arr2 = [];
+    function range(data) {
+      // arr2.push(data.name)
+      if(data.children){
+        for(let i =0; i < data.children.length; i++){
+          arr2.push(data.children[i].name)
+        }
+        for(let j =0; j < data.children.length; j++){
+          if(data.children[j].children){
+            range(data.children[j])
+          }
+        }
+      }
+    }
+    
+    range(data)
+    console.log(arr2)
+  </script>
+</body>
+</html>

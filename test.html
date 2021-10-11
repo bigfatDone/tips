@@ -44,6 +44,9 @@
   <div class="table">
     <div class="table-inline">woshi</div>
   </div>
+  <div id="test">
+    <div id="my">8888</div>
+  </div>
   <script>
     // // 替换千分位
     // let str = '123456789'
@@ -55,6 +58,18 @@
     // console.log(str1)
     // console.log(str2)
     // console.log(str3)
+
+    var id = document.getElementById('my');
+    var test = document.getElementById('test');
+    id.onclick = function(e) {
+      console.log(e.stopPropagation)
+      e.stopPropagation()
+         
+         
+    }
+    test.onclick = function(e) {
+      console.log(9999)
+    }
     // 作用域在编译的时候就已经确定了
     function foo() {
       console.log(b) // 这个b是全局作用域下
