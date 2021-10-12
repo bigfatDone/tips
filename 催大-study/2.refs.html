@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+  </div>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    const { ref, h } = Vue
+    var Main = {
+      name: 'App',
+      setup(props) {
+        let name = ref('zyd')
+        return { name }
+      },
+      render() {
+        return h('div', { class: 'oo' }, this.name)
+      },
+      created () {
+        console.log(this)
+      }
+    }
+
+    const app = Vue.createApp(Main);
+    const el = document.getElementById('app')
+    app.mount(el);
+  </script>
+</body>
+</html>
