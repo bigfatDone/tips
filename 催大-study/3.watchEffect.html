@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    let { ref, h, watchEffect, watch, reactive, toRefs } = Vue
+    const main = {
+      setup() {
+        let count = ref(0)
+        watchEffect(() => {
+          console.log(count.value)
+        }, {immediate: true, deep: true}) //触发源码__DEV__状态下没有cb报错
+        count.value = 18
+        return { count }
+      },
+      render() {
+        return h('div', {}, [h(watchChild)])
+      },
+    }
+
+    const watchChild = {
+      setup() {
+        const state = reactive({
+          count: 0
+        })
+
+        watch(() => state, (count, preCount) => {
+          console.log('count has change')
+        })
+
+        state.count = '88'
+        // return { ...toRefs(state) }
+        return () => h('div', {}, state.count)
+      },
+      // render() {
+      //   return h('div', {}, [h('h1',{},this.count)])
+      // }
+    }
+    let el = document.getElementById('app')
+    const app = Vue.createApp(main)
+    app.mount(el);
+  </script>
+</body>
+</html>

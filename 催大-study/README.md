@@ -8,3 +8,18 @@
 
 4. `T` 泛型，代表所有的类型都是待定的。只要传进类型，所有`<T>`都是会是同样的类型
 
+5. `const` 声明的object表示内存地址不变，不会变成其他的数据类型。object里面的值可以任意变换，但内存地址还是指向同一个。如果是需要修改object的类型。那么就可以使用let声明。
+
+``` javascript
+// bad
+const life = {};
+life = '+1s'; // error
+
+// good
+const life = {};
+life.length = 90;
+
+// good
+let life = {};
+life = '+1s'; // ok
+```

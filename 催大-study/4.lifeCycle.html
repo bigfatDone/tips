@@ -11,19 +11,25 @@
   </div>
   <script src="https://unpkg.com/vue@next"></script>
   <script>
-    const { ref, h, computed } = Vue
+    const { ref, h, onMounted, onBeforeMount } = Vue
     var Main = {
       name: 'App',
       setup(props) {
         let name = ref('zyd')
+        onBeforeMount(() => {
+          console.log('我是onBeforeMount') // 1
+        })
+        onMounted(() => {
+          console.log('我是onMouted') // 2
+        })
         return { name }
       },
       render() {
         return h('div', { class: 'oo' }, this.name)
       },
-      created () {
-        console.log(this)
-      }
+      mounted() {
+        console.log('我是mounded') // 3，setup里面的执行比较快
+      },
     }
 
     const app = Vue.createApp(Main);
