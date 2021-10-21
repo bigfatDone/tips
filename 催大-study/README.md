@@ -10,7 +10,7 @@
 
 5. `const` 声明的object表示内存地址不变，不会变成其他的数据类型。object里面的值可以任意变换，但内存地址还是指向同一个。如果是需要修改object的类型。那么就可以使用let声明。
 
-``` javascript
+``` js
 // bad
 const life = {};
 life = '+1s'; // error
@@ -22,4 +22,77 @@ life.length = 90;
 // good
 let life = {};
 life = '+1s'; // ok
+```
+
+6. `SFC`里面的`.vue`的template字段必须要有或者`<script>`里面必须要有`render`函数，其他的标签可有可有无。
+
+## 应用api-mount
+
+`mount`的使用，在源码里面`vue`实例需要挂载到某个元素上，参数可以传`string`或者是`element`,在传入值的时候，mount会去调用`normalizeContainer`，进行将其转为`element`类型。
+
+```js
+// runtime-core/index.ts
+app.mount = (containerOrSelector: Element | ShadowRoot | string): any => {
+  const container = normalizeContainer(containerOrSelector)
+  if (container) {
+    return mount(container, true, container instanceof SVGElement)
+  }
+}
+
+// 将容器正常化
+function normalizeContainer(
+container: Element | ShadowRoot | string
+): Element | null {
+  if (isString(container)) {
+    const res = document.querySelector(container)
+    return res
+  }
+  return container as any
+}
+```
+
+## 应用api-use
+
+安装 Vue.js 插件。如果插件是一个对象，它必须暴露一个`install` 方法。如果它本身是一个函数，它将被视为安装方法。插件只能安装一次，因为在源码中会有`installedPlugins<set>`来判断当前插件是否已经安装过了。该安装方法将以应用实例作为第一个参数被调用。传给 use 的其他 options 参数将作为后续参数传入该安装方法。
+
+```js
+// runtime-core/apiCreateApp.ts
+use(plugin: Plugin, ...options: any[]) {
+  if (installedPlugins.has(plugin)) {
+    __DEV__ && warn(`Plugin has already been applied to target app.`)
+  } else if (plugin && isFunction(plugin.install)) {
+    installedPlugins.add(plugin)
+    plugin.install(app, ...options)
+  } else if (isFunction(plugin)) {
+    installedPlugins.add(plugin)
+    plugin(app, ...options)
+  } else if (__DEV__) {
+    warn(
+      `A plugin must either be a function or an object with an "install" ` +
+        `function.`
+    )
+  }
+  return app
+}
+```
+
+## 应用api-component
+
+使用component来注册一个组件，会挂载全局的context上面，如果只有组件名没有组件，那么全局不会加入这个组件，只有有了组件名和组件才会加入到全局的组件里面，同同事还会判断是否组件重复了。
+
+```js
+// runtime-core/apiCreateApp.ts
+component(name: string, component?: Component): any {
+  if (__DEV__) {
+    validateComponentName(name, context.config)
+  }
+  if (!component) { // 重复组件名
+    return context.components[name]
+  }
+  if (__DEV__ && context.components[name]) {
+    warn(`Component "${name}" has already been registered in target app.`)
+  }
+  context.components[name] = component
+  return app
+}
 ```
