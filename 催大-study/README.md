@@ -78,7 +78,7 @@ use(plugin: Plugin, ...options: any[]) {
 
 ## 应用api-component
 
-使用component来注册一个组件，会挂载全局的context上面，如果只有组件名没有组件，那么全局不会加入这个组件，只有有了组件名和组件才会加入到全局的组件里面，同同事还会判断是否组件重复了。
+使用`component`来注册一个组件，会挂载全局的`context`上面，如果只有组件名没有组件，那么全局不会加入这个组件，只有有了组件名和组件才会加入到全局的组件里面，同时还会判断是否组件重复了。
 
 ```js
 // runtime-core/apiCreateApp.ts
@@ -95,4 +95,45 @@ component(name: string, component?: Component): any {
   context.components[name] = component
   return app
 }
+```
+
+## 应用api-directive
+
+`directive`作为自定义指令，可以在全局范围内使用。它是挂载到context上面的，并且不能和原生的指令有冲突，`validateDirectiveName`就是用来验证是否和原生指令冲突。
+
+```js
+// runtime-core/apiCreateApp.ts
+directive(name: string, directive?: Directive) {
+  if (__DEV__) {
+    validateDirectiveName(name)
+  }
+
+  if (!directive) {
+    return context.directives[name] as any
+  }
+  if (__DEV__ && context.directives[name]) {
+    warn(`Directive "${name}" has already been registered in target app.`)
+  }
+  context.directives[name] = directive
+  return app
+},
+```
+
+## 应用api-config
+
+config传参是无法接收的，因为set方法是没有接收参数值。只能是调用config的属性来进行出来业务逻辑。
+
+```js
+// runtime-core/apiCreateApp.ts
+get config() {
+  return context.config
+},
+
+set config(v) {
+  if (__DEV__) {
+    warn(
+      `app.config cannot be replaced. Modify individual options instead.`
+    )
+  }
+},
 ```
