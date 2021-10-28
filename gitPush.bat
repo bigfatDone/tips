@@ -1,5 +1,5 @@
 @echo off
-echo "ooo"
+echo "--begin--"
 
 git pull
 
@@ -13,6 +13,6 @@ git commit -m "%now%"
 
 git push
 
-echo "ooo"
+echo "--end--"
 
 pause
