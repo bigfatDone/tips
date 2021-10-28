@@ -1,7 +1,5 @@
 @echo off
 echo "--begin--"
-start "C:\Windows\System32\cmd.exe"
-cd E:\tips
 
 git pull
 
