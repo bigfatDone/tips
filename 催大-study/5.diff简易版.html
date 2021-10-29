@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // const n1 = []
+    const n1 = [
+      { type: 'one', key: 'one' },
+      { type: 'two', key: 'two' },
+      { type: 'nit', key: 'nit' },
+      { type: 'six', key: 'six' },
+    ]
+    const n2 = [
+      { type: 'one', key: 'one' },
+      { type: 'two', key: 'two' },
+      { type: 'four', key: 'four' },
+      { type: 'five', key: 'five' },
+      { type: 'six', key: 'six' },
+    ]
+
+    let i = 0
+    let e1 = n1.length - 1 // 旧节点长度
+    let e2 = n2.length - 1 // 新节点的长度
+    // 判断是相同的节点
+    function isSameVnode(preChild, child) {
+      if (preChild.type === child.type && preChild.key === child.key) {
+        console.log(`n1和n2的type值为${child.type}是相同的节点`)
+        return true
+      }
+      return false
+    }
+
+    // 两个节点进行比较打补丁
+    function patch(n1, n2) {
+      if (n1 && n2) {
+        console.log(`两个节点不同，进行比较`);
+      } else if (!n1 && n2) {
+        console.log(`新增节点，节点的type值为${n2.type}`);
+      } else {
+        console.log(`删除节点，节点的type值为${n1.type}`);
+      }
+    }
+    // 从左往右循环
+    while (i <= e1 && i <= e2) {
+      if (isSameVnode(n1[i], n2[i])) {
+        i++
+      } else {
+        break
+      }
+    }
+    // 从右往左循环
+    while (i <= e1 && i <= e2) {
+      if (isSameVnode(n1[e1], n2[e2])) {
+        e1--
+        e2--
+      } else {
+        break
+      }
+    }
+
+    // 两边遍历，旧节点两边和新节点两边完全相同，旧节点遍历完之后新节点中间还完全多余出来，为新增
+    if (i > e1 && i <= e2) {
+      // for (let c = i; c <= e2; c++) {
+      //   patch(null, n2[c])
+      // }
+      while(i <= e2) {
+        patch(null, n2[i])
+        i++
+      }
+    // 两边遍历，旧节点两边和新节点两边完全相同，新节点遍历完之后旧节点中间还完全多余出来，为删除
+    } else if (i <= e1 && i > e2) {
+      while(i <= e1) {
+        patch(n1[i], null)
+        i++
+      }
+    // 中间的位置更改变化
+    } else {
+      const s1 = i
+      const s2 = i
+      const keyToNewIndexMap = new Map()
+      for(let i = s2; i <= e2; i ++) {
+        const nextChild = n2[i]
+        keyToNewIndexMap.set(nextChild.key, i) // 获取新节点的key对应的下标
+      }
+
+      // 获取新节点多出的长度
+      let abtl = e2 - s2 + 1
+      const newIndexToOldInedexMap = new Array(abtl)
+      for(let index = 0; index < newIndexToOldInedexMap.length; index++) {
+        newIndexToOldInedexMap[index] = -1
+      }
+
+      // 开始遍历旧节点
+      for(i = s1; i <= e1; i ++) {
+        let preChild = n1[i]
+        let index = keyToNewIndexMap.get(preChild.key)
+        newIndexToOldInedexMap[index] = i
+        if (index === undefined) { // 说明新节点中没有这个节点,也就是删除了
+          patch(preChild, null)
+        }
+      }
+
+      // 开始遍历新节点
+      for(i = e2; i >= s2; i--) {
+        let nextChild = n2[i]
+        if (newIndexToOldInedexMap[i - s2] === -1) { // 说明旧节点中没有这个节点，也就是新增节点
+          patch(null, nextChild)
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
