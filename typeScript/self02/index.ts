@@ -10,7 +10,7 @@ class hello {
     this.name1 = value
   }
 }
-
+te
 let a = new hello(222)
 console.log(a.myName);
 a.myName = 8881
