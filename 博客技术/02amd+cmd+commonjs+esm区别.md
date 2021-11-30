@@ -2,17 +2,50 @@
 
 ## AMD (RequireJS)
 
+- AMD 规范在这里：<https://github.com/amdjs/amdjs-api/wiki/AMD>
+
 - AMD = Asynchronous Module Definition，即 异步模块定义。
 
 - AMD 规范加载模块是异步的，并允许函数回调，不必等到所有模块都加载完成，后续操作可以正常执行（依赖前置，提前执行）。
 
+```js
+// AMD 默认推荐的是
+define(['./a', './b'], function(a, b) {  // 依赖必须一开始就写好    
+  a.doSomething()
+  // 此处略去 100 行
+  b.doSomething()    
+  // ...
+})
+```
+
 ## CMD (SeaJS)
+
+- CMD 规范在这里：<https://github.com/seajs/seajs/issues/242>
 
 - CMD = Common Module Definition，即 通用模块定义。CMD 是 SeaJS 在推广过程中对模块定义的规范化产出。
 
-- AMD中只要模块作为依赖时，就会加载并初始化
-
 - CMD中，模块作为依赖且被引用时才会初始化，否则只会加载。
+
+```js
+// CMD 默认推荐的是
+define(function(require, exports, module) {   
+
+  // 获取模块 a 的接口
+  var a = require('./a') 
+  // 调用模块 a 的方法,就近依赖
+  a.doSomething()
+
+  // 获取模块 b 的接口
+  var b = require('./b')
+  // 调用模块 b 的方法，就近依赖
+  b.doSomething()
+  // ... 
+})
+```
+
+## AMD和CMD的区别
+
+- AMD中只要模块作为依赖时，就会加载并初始化
 
 - CMD 推崇依赖就近，AMD 推崇依赖前置。
 
@@ -31,7 +64,7 @@
 
 - defer与async的区别是：defer要等到整个页面在内存中正常渲染结束（DOM 结构完全生成，以及其他脚本执行完成），才会执行；async一旦下载完，渲染引擎就会中断渲染，执行这个脚本以后，再继续渲染。一句话，defer是“渲染完再执行”，async是“下载完就执行”。另外，如果有多个defer脚本，会按照它们在页面出现的顺序加载，而多个async脚本是不能保证加载顺序的。
 
-## 加载ES6模块
+## 加载ES6（ESM）模块
 
 - 浏览器加载 ES6 模块，也使用`<script>`标签，但是要加入type="module"属性,浏览器对于带有type="module"的`<script>`，都是异步加载，不会造成堵塞浏览器，即等到整个页面渲染完，再执行模块脚本，等同于打开了`<script>`标签的defer属性。
 
@@ -145,3 +178,8 @@ const { method } = packageMain;
   ...
 }
 ```
+
+> 码字不易，可不可给bigfat一个小小赞，回一点点血呢。
+
+
+[![olvzSe.jpg](https://z3.ax1x.com/2021/11/30/olvzSe.jpg)](https://imgtu.com/i/olvzSe)
