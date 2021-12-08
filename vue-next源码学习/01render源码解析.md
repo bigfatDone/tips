@@ -102,7 +102,148 @@ function baseCreateRenderer(
   return {
     render,
     hydrate,
-    createApp: createAppAPI(render, hydrate) // 终于回到开头说的那个函数
+    createApp: createAppAPI(render, hydrate) // 终于回到开头说的那个函数，形成了闭环
+  }
+}
+```
+
+## render内部定义
+
+`render`函数会接收vnode用来渲染到页面中去，内部会有两个判断，当`vnode`为空的情况，就说明没的内容挂载，如果之前赋予的`vnode`是有数据的，那么就会认定这是要卸载了之前挂载的`vnode`。如果`vnode`有值，那么就会进行`patch`。
+
+```js
+const render: RootRenderFunction = (vnode, container, isSVG) => {
+  if (vnode == null) {
+    if (container._vnode) {
+      unmount(container._vnode, null, null, true)
+    }
+  } else {
+    patch(container._vnode || null, vnode, container, null, null, null, isSVG)
+  }
+  // 调用调度系统，批量执行清空前置回调任务队列
+  flushPostFlushCbs()
+  container._vnode = vnode
+}
+```
+
+## patch不同类型和标志
+
+patch的主要入参有`n1(旧节点)`，`n2(新节点)`和`container(挂载的容器)`，进行patch的时候，如果n1和n2是不同的节点，那么就要卸载掉n1,然后就将n2进行细分。接下来则是对vnode的类型进行`switch`。对于vnode的type有四个基础的(`text`,`commont`,`static`和`fragmnet`),当匹配不上这些基础类型的type之后，就会去匹配`shapeFlag`,`shapeFla`g是用二进制进行编码的，通过位运算符`&`进行判断不同的`shapFlag`(`ELEMENT`,`COMPONENT`,`TELEPORT`和`SUSPENSE`)。
+
+```js
+const patch: PatchFn = (
+  n1,
+  n2,
+  container,
+  anchor = null,
+  parentComponent = null,
+  parentSuspense = null,
+  isSVG = false,
+  slotScopeIds = null,
+  optimized = __DEV__ && isHmrUpdating ? false : !!n2.dynamicChildren
+) => {
+  if (n1 === n2) {
+    return
+  }
+
+  // 修补不同的类型，卸载旧的vonde
+  if (n1 && !isSameVNodeType(n1, n2)) {
+    anchor = getNextHostNode(n1)
+    unmount(n1, parentComponent, parentSuspense, true)
+    n1 = null
+  }
+
+  if (n2.patchFlag === PatchFlags.BAIL) {
+    optimized = false
+    n2.dynamicChildren = null
+  }
+
+  const { type, ref, shapeFlag } = n2
+  // 进行遍历，获取type和shapeflag进而调用不同的进程
+  switch (type) {
+    case Text:
+      processText(n1, n2, container, anchor)
+      break
+    case Comment:
+      processCommentNode(n1, n2, container, anchor)
+      break
+    case Static:
+      if (n1 == null) {
+        mountStaticNode(n2, container, anchor, isSVG)
+      } else if (__DEV__) {
+        patchStaticNode(n1, n2, container, isSVG)
+      }
+      break
+    case Fragment:
+      processFragment(
+        n1,
+        n2,
+        container,
+        anchor,
+        parentComponent,
+        parentSuspense,
+        isSVG,
+        slotScopeIds,
+        optimized
+      )
+      break
+    default:
+      if (shapeFlag & ShapeFlags.ELEMENT) {
+        processElement(
+          n1,
+          n2,
+          container,
+          anchor,
+          parentComponent,
+          parentSuspense,
+          isSVG,
+          slotScopeIds,
+          optimized
+        )
+      } else if (shapeFlag & ShapeFlags.COMPONENT) {
+        processComponent(
+          n1,
+          n2,
+          container,
+          anchor,
+          parentComponent,
+          parentSuspense,
+          isSVG,
+          slotScopeIds,
+          optimized
+        )
+      } else if (shapeFlag & ShapeFlags.TELEPORT) {
+        ;(type as typeof TeleportImpl).process(
+          n1 as TeleportVNode,
+          n2 as TeleportVNode,
+          container,
+          anchor,
+          parentComponent,
+          parentSuspense,
+          isSVG,
+          slotScopeIds,
+          optimized,
+          internals
+        )
+      } else if (__FEATURE_SUSPENSE__ && shapeFlag & ShapeFlags.SUSPENSE) {
+        ;(type as typeof SuspenseImpl).process(
+          n1,
+          n2,
+          container,
+          anchor,
+          parentComponent,
+          parentSuspense,
+          isSVG,
+          slotScopeIds,
+          optimized,
+          internals
+        )
+      }
+  }
+
+  // 设置ref
+  if (ref != null && parentComponent) {
+    setRef(ref, n1 && n1.ref, parentSuspense, n2 || n1, !n2)
   }
 }
 ```
