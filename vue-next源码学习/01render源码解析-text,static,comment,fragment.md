@@ -298,7 +298,7 @@ processCommentNode: ProcessTextOrCommentFn = (
 
 ### StaticNode处理静态节点
 
-当判断type是`static`类型的时候，就会调用这个。这个是静态节点，接收用户自己的模板，因为这些模板是直接使用innerHTML，是有风险的，所以用户要确保提交的模板是安全的。在生产环境中，当旧模板有内容的时候是不会对其进行操作的，为了用户的安全着想。但是在开发环境会对其内容进行patch处理，通过patchStaticNode函数对比不同内容进行不同操作。
+当判断type是`static`类型的时候，就会调用这个。这个是静态节点，接收用户自己的模板，因为这些模板是直接使用innerHTML，是有风险的，所以用户要确保提交的模板是安全的。在生产环境中，当旧模板有内容的时候是不会对其进行操作的，为了用户的安全着想。但是在开发环境会对其内容进行`patch`处理，通过`patchStaticNode`函数对比不同内容进行不同操作。
 
 ```js
 mountStaticNode = (
@@ -309,7 +309,7 @@ mountStaticNode = (
 ) => {
 //静态节点仅在与编译器dom/运行时dom一起使用时才存在
 //这保证了hostInsertStaticContent的存在。
-  ;[n2.el, n2.anchor] = hostInsertStaticContent!( // 创建静态节点，并且插入尼尔
+  ;[n2.el, n2.anchor] = hostInsertStaticContent!( // 创建静态节点，并且插入内容
     n2.children as string,
     container,
     anchor,
@@ -341,3 +341,85 @@ patchStaticNode = (
   }
 }
 ```
+
+### processFragment处理片段
+
+这是vue3新增的一个组件，以前的vue组件是需要一个根节点，里面才可以继续写内容。但是`fragment`就取代了这种情况，可以直接写平级代码，就不会有多余的div了。`processFragment`这个函数就处理这些组件的内容，将其行行解析操作。当n1是为空的时候，就会直接进行`mountChildren`操作，将内部的内容遍历挂载。如果旧节点和新节点都有内容的情况下，就会把新旧节点的内容进行对比更新，由于可以接受`v-for`之类的动态内容，所以还将其进行不同的处理。
+
+```js
+processFragment = (
+  n1: VNode | null,
+  n2: VNode,
+  container: RendererElement,
+  anchor: RendererNode | null,
+  parentComponent: ComponentInternalInstance | null,
+  parentSuspense: SuspenseBoundary | null,
+  isSVG: boolean,
+  slotScopeIds: string[] | null,
+  optimized: boolean
+) => {
+  // 创建fragment的开头和结束位置
+  const fragmentStartAnchor = (n2.el = n1 ? n1.el : hostCreateText(''))!
+  const fragmentEndAnchor = (n2.anchor = n1 ? n1.anchor : hostCreateText(''))!
+
+  let { patchFlag, dynamicChildren, slotScopeIds: fragmentSlotScopeIds } = n2
+
+  // 检查是否有插槽的片段，如果有就将其收集起来
+  if (fragmentSlotScopeIds) {
+    slotScopeIds = slotScopeIds
+      ? slotScopeIds.concat(fragmentSlotScopeIds)
+      : fragmentSlotScopeIds
+  }
+
+  if (n1 == null) {
+    hostInsert(fragmentStartAnchor, container, anchor)
+    hostInsert(fragmentEndAnchor, container, anchor)
+    // fragment只有数组子集，所以就是直接加载子集
+    mountChildren(
+      n2.children as VNodeArrayChildren,
+      container,
+      fragmentEndAnchor,
+      parentComponent,
+      parentSuspense,
+      isSVG,
+      slotScopeIds,
+      optimized
+    )
+  } else {
+    if (
+      patchFlag > 0 &&
+      patchFlag & PatchFlags.STABLE_FRAGMENT &&
+      dynamicChildren &&
+      n1.dynamicChildren
+    ) {
+      // 动态属性的子集，例如使用了v-for之类的，那么就进行动态的对比打补丁
+      patchBlockChildren(
+        n1.dynamicChildren,
+        dynamicChildren,
+        container,
+        parentComponent,
+        parentSuspense,
+        isSVG,
+        slotScopeIds
+      )
+    } else {
+      // 平常的子集，进行对比打补丁
+      patchChildren(
+        n1,
+        n2,
+        container,
+        fragmentEndAnchor,
+        parentComponent,
+        parentSuspense,
+        isSVG,
+        slotScopeIds,
+        optimized
+      )
+    }
+  }
+}
+```
+
+# 结语
+
+只对四钟基础类型进行源码解读，后续还有对shapeflag和diff算法的解析，给个小关注，方便后续学习~~~
