@@ -247,3 +247,97 @@ const patch: PatchFn = (
   }
 }
 ```
+
+### processText处理文本
+
+当判断type是`text`类型的时候，就调用这个流程。由于是文本类型，那么就是会直接操作`dom`对象。当旧节点没有数据的时候，就会将这个文本的值直接`hostInsert`到`dom`节点上去。如果新旧节点都有数据，如果两个节点对比的数据是一致的，那么就不会进行任何的操作，保持原来的状态，如果不一致，就会去替换旧的节点，将新节点的文本直接替换掉。
+
+```js
+processText: ProcessTextOrCommentFn = (n1, n2, container, anchor) => {
+  if (n1 == null) {
+    // 创建文本节点
+    hostInsert( // 调用dom操作
+      (n2.el = hostCreateText(n2.children as string)),
+      container,
+      anchor
+    )
+  } else {
+    // !  用在赋值的内容后时，使null和undefined类型可以赋值给其他类型并通过编译
+    const el = (n2.el = n1.el!)
+    if (n2.children !== n1.children) {
+      hostSetText(el, n2.children as string) // 调用dom操作
+    }
+  }
+}
+```
+
+### processCommentNode处理注释节点
+
+当判断type是`comment`类型的时候，就会调用这个。这个是注释类型，所有也是会直接操作`dom`对象，当节点没有数据的时候，那么就会去先创建注释节点，然后把这个节点插入到指定的dom元素上。因为vue3里面是不支持注释节点的动态替换的，所以当两个新旧节点都有数据的时候，是会直接把旧的内容直接赋予给新的节点。
+
+```js
+processCommentNode: ProcessTextOrCommentFn = (
+  n1,
+  n2,
+  container,
+  anchor
+) => {
+  if (n1 == null) {
+    // 插入节点到指定dom元素上
+    hostInsert(
+      (n2.el = hostCreateComment((n2.children as string) || '')), // 创建注释节点
+      container,
+      anchor
+    )
+  } else {
+    // 不支持动态注释
+    n2.el = n1.el
+  }
+}
+```
+
+### StaticNode处理静态节点
+
+当判断type是`static`类型的时候，就会调用这个。这个是静态节点，接收用户自己的模板，因为这些模板是直接使用innerHTML，是有风险的，所以用户要确保提交的模板是安全的。在生产环境中，当旧模板有内容的时候是不会对其进行操作的，为了用户的安全着想。但是在开发环境会对其内容进行patch处理，通过patchStaticNode函数对比不同内容进行不同操作。
+
+```js
+mountStaticNode = (
+  n2: VNode,
+  container: RendererElement,
+  anchor: RendererNode | null,
+  isSVG: boolean
+) => {
+//静态节点仅在与编译器dom/运行时dom一起使用时才存在
+//这保证了hostInsertStaticContent的存在。
+  ;[n2.el, n2.anchor] = hostInsertStaticContent!( // 创建静态节点，并且插入尼尔
+    n2.children as string,
+    container,
+    anchor,
+    isSVG
+  )
+}
+
+// 开发环境，只用于hmr（热更新）
+patchStaticNode = (
+  n1: VNode,
+  n2: VNode,
+  container: RendererElement,
+  isSVG: boolean
+) => {
+  if (n2.children !== n1.children) {
+    const anchor = hostNextSibling(n1.anchor!)
+    // 移除旧的的静态节点
+    removeStaticNode(n1)
+    // 插入新的静态节点
+    ;[n2.el, n2.anchor] = hostInsertStaticContent!(
+      n2.children as string,
+      container,
+      anchor,
+      isSVG
+    )
+  } else { // 两个节点一致，直接把旧节点复制给新节点
+    n2.el = n1.el
+    n2.anchor = n1.anchor
+  }
+}
+```
