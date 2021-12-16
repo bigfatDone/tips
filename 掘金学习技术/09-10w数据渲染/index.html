@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+  }
+
+  #container {
+    height: 100vh;
+    overflow: auto;
+  }
+
+  .sunshine {
+    display: flex;
+    padding: 10px;
+  }
+
+  img {
+    width: 150px;
+    height: 150px;
+  }
+</style>
+
+<body>
+  <div id="container">
+    8888
+  </div>
+  <script src="./ajax.js"></script>
+  <script>
+    // 获取container对象
+    const container = document.getElementById('container')
+
+    // 直接加载
+    // const renderList = async () => {
+    //   console.time('列表时间')
+    //   const list = await getList()
+    //   list.forEach(item => {
+    //     const div = document.createElement('div')
+    //     div.className = 'sunshine'
+    //     div.innerHTML = `<img src="${item.src}" /><span>${item.text}</span>`
+    //     container.appendChild(div)
+    //   })
+    //   console.timeEnd('列表时间')
+    // }
+
+      // settimeout
+    // const renderList = async () => {
+    //     console.time('列表时间')
+    //     const list = await getList()
+    //     const total = list.length
+    //     const page = 0
+    //     const limit = 200
+    //     const totalPage = Math.ceil(total / limit)
+
+    //     const render = (page) => {
+    //         if (page >= totalPage) return
+    //         setTimeout(() => {
+    //             for (let i = page * limit; i < page * limit + limit; i++) {
+    //                 const item = list[i]
+    //                 const div = document.createElement('div')
+    //                 div.className = 'sunshine'
+    //                 div.innerHTML = `<img src="${item.src}" /><span>${item.text}</span>`
+    //                 container.appendChild(div)
+    //             }
+    //             render(page + 1)
+    //         }, 0)
+    //     }
+    //     render(page)
+    //     console.timeEnd('列表时间')
+    // }
+
+      // requestAnimationFrame每一帧
+    // const renderList = async () => {
+    //     console.time('列表时间')
+    //     const list = await getList()
+    //     console.log(list)
+    //     const total = list.length
+    //     const page = 0
+    //     const limit = 200
+    //     const totalPage = Math.ceil(total / limit)
+
+    //     const render = (page) => {
+    //         if (page >= totalPage) return
+    //         // 使用requestAnimationFrame代替setTimeout
+    //         requestAnimationFrame(() => {
+    //             for (let i = page * limit; i < page * limit + limit; i++) {
+    //                 const item = list[i]
+    //                 const div = document.createElement('div')
+    //                 div.className = 'sunshine'
+    //                 div.innerHTML = `<img src="${item.src}" /><span>${item.text}</span>`
+    //                 container.appendChild(div)
+    //             }
+    //             render(page + 1)
+    //         })
+    //     }
+    //     render(page)
+    //     console.timeEnd('列表时间')
+    // }
+
+    // 文档碎片(fragment) + requestAnimationFrame
+    const renderList = async () => {
+      console.time('列表时间')
+      const list = await getList()
+      console.log(list)
+      const total = list.length
+      const page = 0
+      const limit = 200
+      const totalPage = Math.ceil(total / limit)
+
+      const render = (page) => {
+          if (page >= totalPage) return
+          requestAnimationFrame(() => {
+              // 创建一个文档碎片
+              const fragment = document.createDocumentFragment()
+              for (let i = page * limit; i < page * limit + limit; i++) {
+                  const item = list[i]
+                  const div = document.createElement('div')
+                  div.className = 'sunshine'
+                  div.innerHTML = `<img src="${item.src}" /><span>${item.text}</span>`
+                  // 先塞进文档碎片
+                  fragment.appendChild(div)
+              }
+              // 一次性appendChild
+              container.appendChild(fragment)
+              render(page + 1)
+          })
+      }
+      render(page)
+      console.timeEnd('列表时间')
+    }
+
+    renderList()
+  </script>
+</body>
+</html>
+<!-- https://juejin.cn/post/7031923575044964389 -->
