@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    <a href="/home">Home</a>
+
+    <a href="/about">About</a>
+
+    <div class="content">Default</div>
+  </div>
+
+  <script>
+    /**
+     * history改变url，但不会向服务器发送请求。重新刷新页面，就会报错，因为之前的history的栈内部保存的数据都被重置了。匹配不到，所以要服务器对匹配不到进行处理
+    */
+    let els = document.getElementsByTagName("a")
+    let ct = document.querySelector(".content")
+
+    for (const el of els) {
+      el.addEventListener('click', e => {
+        console.log(location);
+        // 阻止默认点击事件
+        e.preventDefault()
+        const href = el.getAttribute('href')
+        console.log(href);
+        // 给history压入栈，路由开始改变
+        history.pushState({}, '', href)
+        switch (href) {
+          case '/home': 
+            ct.innerHTML = 'home'
+            break;
+          case '/about': 
+            ct.innerHTML = 'about'
+            break;
+          default:
+            ct.innerHTML = 'default'
+        }
+      })
+    }
+  </script>
+</body>
+</html>
