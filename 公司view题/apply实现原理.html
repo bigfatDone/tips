@@ -10,6 +10,7 @@
 
 <body>
     <script>
+        // 接收的参数(this, Array) ==> 会立即执行
         Function.prototype.myapply = function (context) {
             context = context || window; // 当前上下文指向函数或者window
             context.fn = this; // 给当前添加属性fn，并且该属性为调用的函数，那么this就是指向当前的调用函数

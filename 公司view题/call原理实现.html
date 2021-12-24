@@ -10,6 +10,7 @@
 
 <body>
     <script>
+        // 接收的参数(this, a1, a2...) ==> 会立即执行
         Function.prototype.mycall = function(context){
             context = context || window; // 当前上下文的指向
             context.fn = this; // 给context创建一个fn属性，并且该属性为调用的函数
