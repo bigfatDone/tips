@@ -18,6 +18,15 @@
 
     // 通过mount挂载上去
     mount(vnode, document.getElementById('app'))
+
+    let n2 = h('div', {name: 'zysnew', atr: 't'}, [
+      h('h1', { val: 'h1new'}, '我是new h1'),
+      h('button', {onClick:() => {console.log('打印-button')}}, '我是也按钮')
+    ])
+
+    setTimeout(() => {
+      patch(vnode, n2)
+    }, 2000)
   </script>
 </body>
 </html>
