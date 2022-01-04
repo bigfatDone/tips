@@ -4,7 +4,7 @@
 
 ## 前置知识
 
-1. tree-shaking摇树优化
+1. tree-shaking 摇树优化
 
 2. magic-string截取字符串
 
