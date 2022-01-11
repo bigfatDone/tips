@@ -215,7 +215,7 @@ Px2rem.prototype.generateRem = function (cssText) {
 
   processRules(astObj.stylesheet.rules);
 
-  return css.stringify(astObj);
+  return css.stringify(astObj); 
 };
 
 //  生成px或者是rem，需要根据dpr（设备像素比）
