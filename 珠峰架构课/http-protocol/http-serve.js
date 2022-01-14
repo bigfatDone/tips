@@ -6,5 +6,5 @@ const server = http.createServer((req, res) => {
   // }
   res.end();
 })
-
+let xhr = new XMLHttpRequest();
 server.listen(8081)
