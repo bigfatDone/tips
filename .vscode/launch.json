@@ -5,6 +5,16 @@
   "version": "0.2.0",
   "configurations": [
       {
+          "name": "promise调试",
+          "program": "${workspaceFolder}/掘进view之道联系题/11-手写promise/demo.js",
+          "request": "launch",
+          "skipFiles": [
+              "<node_internals>/**"
+          ],
+          "type": "pwa-node"
+      },
+      
+      {
           "type": "chrome",
           "request": "attach",
           "name": "Attach to Chrome",
