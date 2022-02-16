@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="button">按钮</button>
+  <script>
+    button.addEventListener('click', () => {
+      console.log('btn 1');
+      Promise.resolve().then(() => {console.log('task 1');})
+    })
+    button.addEventListener('click', () => {
+      console.log('btn 2');
+      Promise.resolve().then(() => {console.log('task 2');})
+    })
+    // output 
+    // btn1 task1 btn2 task2  ---> 这个是宏任务，浏览器的事件函数
+
+
+
+    let fn1 = () => {
+      console.log('btn 1');
+      Promise.resolve().then(() => {console.log('task 1');})
+    }
+    let fn2 = () => {
+      console.log('btn 2');
+      Promise.resolve().then(() => {console.log('task 2');})
+    }
+    fn1();fn2()
+    // output
+    // btn1 btn2 task1 task2 ----> 自然执行
+  </script>
+</body>
+</html>

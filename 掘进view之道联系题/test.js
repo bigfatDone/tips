@@ -11,3 +11,5 @@ function test() {
   console.log(555)
 }
 test()
+console.log(global);
+console.log(process);

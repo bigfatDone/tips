@@ -8,18 +8,18 @@
 <body>
   <script>
     class Father {
-      constructor(){
-        this.name = 'ys'
-        this.age = 18
+      constructor(name, age){
+        this.name = name
+        this.age = age
       }
       say() {
-        console.log('say:' + this.name)
+        console.log('say:' + this.name1)
       }
     }
 
     class Child extends Father {
       constructor(name, age){
-        super()
+        super(name, age) // 执行父类的构造器
         this.name1 = name;
         this.age1 = age
       }

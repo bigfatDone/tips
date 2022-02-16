@@ -6,4 +6,12 @@
 
 3. all(全部执行，遇到第一个失败停止并且抛出第一个) resolve reject race(竞选，第一个首先执行就第一个) then catch(捕获异常) finally(最终会执行) any(遇到第一个成功，抛出第一个成功) allSettled(全部执行，抛出错误和成功结果)；
 
-4. 
+4. 宏任务定义
+
+   - script主代码块、setTimeout 、setInterval 、nodejs的setImmediate 、MessageChannel（react的fiber用到）、postMessage、网络I/O、文件I/O、用户交互的回调等事件、UI渲染事件（DOM解析、布局计算、绘制）等等。
+
+5. 微任务定义
+
+   - 浏览器：new Promise().then(回调) > MutationObserver
+
+   - nodejs：中process.nextTick >new Promise().then(回调) 

@@ -16,9 +16,16 @@
     }
 
     function Chlid(value) {
-      Father.call(this,value)
+      Father.call(this,value) // 将father内容绑定到child作用域内
     }
-    Chlid.prototype = Object.create(Father.prototype)
+    Chlid.prototype = Object.create(Father.prototype, {
+      constructor: { // 修改构造函数的指向
+        value: Chlid,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      }
+    })
     let child = new Chlid('ys')
     child.getValue();
   </script>

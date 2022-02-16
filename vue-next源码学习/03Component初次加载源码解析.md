@@ -38,3 +38,28 @@ for (const key in rawSlots) {
   }
 }
 ```
+
+### 设置有状态组件
+
+给组件实例设置`accessCache`属性用于缓存内部变量，二次访问会直接读取缓存。开始给实例ctx设置公共代理。
+
+```js
+// 创建缓存属性
+instance.accessCache = Object.create(null)
+
+// 对ctx进行全局代理
+instance.proxy = markRaw(new Proxy(instance.ctx, PublicInstanceProxyHandlers))
+```
+
+处理setup属性，创建setup的上下文环境并且给其传入参数：
+
+```js
+return {
+  get attrs() { // attrs只有读操作
+    return attrs || (attrs = createAttrsProxy(instance))
+  },
+  slots: instance.slots, // 插槽
+  emit: instance.emit, // emit参数
+  expose // 暴露公共实例属性
+}
+```
