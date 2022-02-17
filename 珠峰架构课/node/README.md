@@ -14,4 +14,6 @@
 
    - 浏览器：new Promise().then(回调) > MutationObserver
 
-   - nodejs：中process.nextTick >new Promise().then(回调) 
+   - nodejs：中process.nextTick >new Promise().then(回调)
+
+   - 

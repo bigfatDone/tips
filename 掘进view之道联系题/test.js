@@ -13,3 +13,12 @@ function test() {
 test()
 console.log(global);
 console.log(process);
+
+setImmediate(() => {
+    console.log('timeout1')
+    Promise.resolve().then(() => console.log('promise resolve'))
+    process.nextTick(() => console.log('next tick1'))
+});
+setImmediate(() => {
+  console.log('timeout2')
+})
