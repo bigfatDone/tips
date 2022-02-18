@@ -181,5 +181,6 @@ const { method } = packageMain;
 
 > 码字不易，可不可给bigfat一个小小赞，回一点点血呢。
 
+> 还有umd格式，umd格式就是AMD+CMD+commonjs，一般通过打包就会输出umd和esm这两种格式
 
 [![olvzSe.jpg](https://z3.ax1x.com/2021/11/30/olvzSe.jpg)](https://imgtu.com/i/olvzSe)

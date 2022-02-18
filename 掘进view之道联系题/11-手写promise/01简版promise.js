@@ -2,8 +2,9 @@ const PENDING = 'PENDING'
 const FULFILLED = 'FULFILLED'
 const REJECTED = 'REJECTED'
 
-class myPromise {
-  constructor(executor) {
+class myPromise { // 原则上是一个函数
+  // name = 88  通过表达式分割，获取=关键字，判断是属性
+  constructor(executor) { // 这是一个函数，babel成es5，可以看到具体构成
     this.status = PENDING; // 默认的状态
     this.value = ''; // 成功的原因
     this.onFulfilledCallbacks = []; // 成功的回调函数集
@@ -31,7 +32,7 @@ class myPromise {
     }
   }
 
-  then(onFulfilled, onRejected) {
+  then(onFulfilled, onRejected) { // 这个也是函数
     if (this.status === PENDING) { // 异步加载，需要将缓存值存起来
       // 等待状态
       this.onFulfilledCallbacks.push(() => {

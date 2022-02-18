@@ -16,4 +16,8 @@
 
    - nodejs：中process.nextTick >new Promise().then(回调)
 
-   - 
+6. promise只能改变一次状态，resolve和reject没有终止代码执行的能力;catch的返回值会作为下一次成功的入参，reject也一样，返回值会作为下一次成功的入参；
+
+7. async相当于promise；  await相当于yield + co；await后面的作为resolve返回值，await下面的代码都会当成then的resolve回调函数内容来执行。
+
+8. Promise.resolve()就代表这个函数内部执行完了，后续的then就属于下一个任务了；then的方法内返回一个promise会变成x.then来执行。

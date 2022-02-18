@@ -39,7 +39,7 @@ for (const key in rawSlots) {
 }
 ```
 
-### 设置有状态组件
+### 安装有状态组件
 
 给组件实例设置`accessCache`属性用于缓存内部变量，二次访问会直接读取缓存。开始给实例ctx设置公共代理。
 
@@ -61,5 +61,61 @@ return {
   slots: instance.slots, // 插槽
   emit: instance.emit, // emit参数
   expose // 暴露公共实例属性
+}
+```
+
+设置当前组件实例，暂停了对组件的跟踪,执行setup函数，并且对setup内部的进行错误收集。
+
+```js
+setCurrentInstance(instance)
+pauseTracking()
+const setupResult = callWithErrorHandling( // 执行setup函数，报错了就对报错信息收集
+  setup,
+  instance,
+  ErrorCodes.SETUP_FUNCTION,
+)
+resetTracking()
+unsetCurrentInstance()
+
+// callWithErrorHandling
+function callWithErrorHandling(
+  fn: Function,
+  instance: ComponentInternalInstance | null,
+  type: ErrorTypes,
+  args?: unknown[]
+) {
+  let res
+  try {
+    res = args ? fn(...args) : fn() // 执行setup函数
+  } catch (err) {
+    handleError(err, instance, type) // 对错误数据进行收集
+  }
+  return res
+}
+```
+
+因为setup可以用async/await语法糖，所以需要进行是否是promise判断方便进行额外操作；setup的返回值refs在模板中访问时是被自动浅解包的`instance.setupState = proxyRefs(setupResult)`
+
+```js
+function proxyRefs<T extends object>(
+  objectWithRefs: T
+): ShallowUnwrapRef<T> {
+  return isReactive(objectWithRefs)
+    ? objectWithRefs
+    : new Proxy(objectWithRefs, shallowUnwrapHandlers)
+}
+
+// 代理函数，进行解包
+const shallowUnwrapHandlers: ProxyHandler<any> = {
+  get: (target, key, receiver) => unref(Reflect.get(target, key, receiver)),
+  set: (target, key, value, receiver) => {
+    const oldValue = target[key]
+    if (isRef(oldValue) && !isRef(value)) {
+      oldValue.value = value
+      return true
+    } else {
+      return Reflect.set(target, key, value, receiver)
+    }
+  }
 }
 ```
