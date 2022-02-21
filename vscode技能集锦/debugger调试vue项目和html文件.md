@@ -33,3 +33,19 @@
   },
 ]
 ```
+
+## js项目配置
+
+```js
+"configurations": [
+  {
+      "name": "promise调试",
+      "program": "${workspaceFolder}/掘进view之道联系题/11-手写promise/demo.js",
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node"
+  }
+],
+```

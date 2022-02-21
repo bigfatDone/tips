@@ -1,3 +1,8 @@
+---
+theme: channing-cyan
+highlight: github-gist
+---
+
 # Component解析初次加载流程
 
 ## 创建组件实例
@@ -119,3 +124,67 @@ const shallowUnwrapHandlers: ProxyHandler<any> = {
   }
 }
 ```
+
+最终进入到了`finishComponentSetup`函数阶段，这里会将组件进行编译，通过调用`compile()`,将页面的`template`内容转换成`js`形式的`ast`树,最后生成vnode。
+
+抽取出vue中的script内部的所有选项，组成一个函数,方便统一管理。
+
+```js
+export function applyOptions(instance: ComponentInternalInstance) {
+  const options = resolveMergedOptions(instance) // 将组件实例的选项拿出来
+  const publicThis = instance.proxy! as any
+  const ctx = instance.ctx
+
+  // do not cache property access on public proxy during state initialization
+  shouldCacheAccess = false
+
+ // 首先执行beforeCreate函数
+  if (options.beforeCreate) {
+    callHook(options.beforeCreate, instance, LifecycleHooks.BEFORE_CREATE) // 绑定实例，执行函数
+  }
+  // 函数内部选项
+  const {
+    // state
+    data: dataOptions,
+    computed: computedOptions,
+    methods,
+    watch: watchOptions,
+    provide: provideOptions,
+    inject: injectOptions,
+    // lifecycle
+    created,
+    beforeMount,
+    mounted,
+    beforeUpdate,
+    updated,
+    activated,
+    deactivated,
+    beforeDestroy,
+    beforeUnmount,
+    destroyed,
+    unmounted,
+    render,
+    renderTracked,
+    renderTriggered,
+    errorCaptured,
+    serverPrefetch,
+    // public API
+    expose,
+    inheritAttrs,
+    // assets
+    components,
+    directives,
+    filters
+  } = options
+}
+```
+
+## Suspense组件额外处理
+
+因为`setu()`是异步的，`Suspense`依赖的逻辑有可能是依赖于`setup`的内容，所以需要提前执行。
+
+```js
+parentSuspense && parentSuspense.registerDep(instance, setupRenderEffect)
+```
+
+## setupRenderEffect设置渲染效果

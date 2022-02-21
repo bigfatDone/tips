@@ -1,3 +1,8 @@
+---
+theme: channing-cyan
+highlight: github-gist
+---
+
 # render源码解析篇-element,component,teleport,suspense
 
 ## processElement处理元素标签

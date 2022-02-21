@@ -1,3 +1,8 @@
+---
+theme: channing-cyan
+highlight: github-gist
+---
+
 # render源码解析篇text,static,comment,fragment
 
 ## render如何被调用
