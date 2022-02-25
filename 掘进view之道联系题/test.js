@@ -38,3 +38,7 @@
 // Promise.reject(88).then(null, reject => 88).then(res => console.log(res)).catch(e => console.log(e))
 
 //   script start  async1 start    async2      promise1 script end    async-next  promise2 settimeout
+
+let a = [11]
+a.splice(0, 0, 55)
+console.log(a);

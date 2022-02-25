@@ -15,10 +15,19 @@
 // a.myName = 8881
 // console.log(a.name1);
 
-function thisUse(){
-    this.name = '钟阳山'
-    console.log(this);
-}
+// function thisUse(){
+//     this.name = '钟阳山'
+//     console.log(this);
+// }
 
-let use = new thisUse()
-console.log(use.name);
+// let use = new thisUse()
+// console.log(use.name);
+
+class t {
+    constructor(public name) {}
+    fn() {
+        console.log(this)
+    }
+}
+let f = new t('zys')
+f.fn()

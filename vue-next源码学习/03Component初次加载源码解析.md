@@ -5,15 +5,15 @@ highlight: github-gist
 
 # Component解析初次加载流程
 
-## 创建组件实例
+## 创建组件实例(createComponentInstance)
 
 组件实例，设置vue组件的所有通用属性，包括attr，props，provides这些vue组件自身带有的属性，通过对象的形式接收起来。组件内部也赋予了生命周期的命名，目前都是空值。会将父级的provides继续接收到当前组件中`provides: parent ? parent.provides : Object.create(appContext.provides)`,对于props和emits参数，会进行额外的存储起来,通过`normalizePropsOptions`和`normalizeEmitsOptions`这个两个函数，因为组件允许有mixins和extends功能，所以也需要将功能里面这些属性全部聚集起来。
 
-## 将当前实例加入热更新
+## 将当前实例加入热更新(registerHMR)
 
 判断当前实例`__hmrId`属性有没有被加入map（用于记录当前实例是否被收录），如果没有则要`set`进去。
 
-## 开始初始化组件实例
+## 开始初始化组件实例(setupComponent)
 
 通过判断当前组件的shapeFlag是否是有状态组件（组件分为有状态组件和无状态组件）。
 
@@ -44,7 +44,7 @@ for (const key in rawSlots) {
 }
 ```
 
-### 安装有状态组件
+### 安装有状态组件(setupStatefulComponent)
 
 给组件实例设置`accessCache`属性用于缓存内部变量，二次访问会直接读取缓存。开始给实例ctx设置公共代理。
 
@@ -187,4 +187,18 @@ export function applyOptions(instance: ComponentInternalInstance) {
 parentSuspense && parentSuspense.registerDep(instance, setupRenderEffect)
 ```
 
-## setupRenderEffect设置渲染效果
+## 设置渲染效果(setupRenderEffect)
+
+创建渲染效果，开始将组件进行反应处理。
+
+```js
+const effect = new ReactiveEffect(
+  componentUpdateFn, // 组件内部更新处理函数
+  () => queueJob(instance.update), // 加入任务工作队列
+  instance.scope
+)
+```
+
+对组件进行更新处理，进入`componentUpdateFn`处理方法，对于没有加载过的组件，从组件实例内部拿出`bm(beforemounted)`,执行生命钩子函数。之后通过`const subTree = (instance.subTree = renderComponentRoot(instance))`将组件生成以组件为根目录的vnode，并且通过`patch`方法进行打补丁，进行下一步的shapeFlag的细分操作。
+
+后面就进行组件内部的钩子函数`m(mounted)`操作，当遇到`ShapeFlags.COMPONENT_SHOULD_KEEP_ALIVE`的时候，说明是缓存组件，则会执行`activated`钩子函数。

@@ -15,9 +15,18 @@
 // a.myName = 8881
 // console.log(a.name1);
 
-function thisUse(){
-  this.name = '钟阳山'
-}
+// function thisUse(){
+//   this.name = '钟阳山'
+// }
 
-let use = new thisUse()
-console.log(use.name);
+// let use = new thisUse()
+// console.log(use.name);
+
+// class t {
+//   constructor(public name: string) {}
+//   fn() {
+//       console.log(this.name) // 设置了public就是可以全局访问的
+//   }
+// }
+// let f = new t('zys')
+// f.fn()
