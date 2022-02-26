@@ -39,6 +39,15 @@
 
 //   script start  async1 start    async2      promise1 script end    async-next  promise2 settimeout
 
-let a = [11]
-a.splice(0, 0, 55)
-console.log(a);
+// let a = [11]
+// a.splice(0, 0, 55)
+// console.log(a);
+
+let thenable = {
+  then: (resolve, reject) => {
+    console.log(888)
+    resolve(thenable)
+  }
+}
+
+Promise.reject(thenable)  //这会造成一个死循环
