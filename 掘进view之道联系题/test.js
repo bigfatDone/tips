@@ -43,11 +43,38 @@
 // a.splice(0, 0, 55)
 // console.log(a);
 
-let thenable = {
-  then: (resolve, reject) => {
-    console.log(888)
-    resolve(thenable)
-  }
-}
+// let thenable = {
+//   then: (resolve, reject) => {
+//     console.log(888)
+//     resolve(thenable)
+//   }
+// }
 
-Promise.reject(thenable)  //这会造成一个死循环
+// Promise.reject(thenable)  //这会造成一个死循环
+
+// setTimeout(() => {
+//   console.log('timer1')
+ 
+//   Promise.resolve().then(function() {
+//     console.log('promise1')
+//   })
+//  }, 0)
+ 
+//  process.nextTick(() => {
+//   console.log('nextTick')
+//   process.nextTick(() => {
+//     console.log('nextTick')
+//     process.nextTick(() => {
+//       console.log('nextTick')
+//       process.nextTick(() => {
+//         console.log('nextTick')
+//       })
+//     })
+//   })
+//  })
+
+function arg(a, ...args) {
+  console.log(arguments);
+  console.log(...args);
+}
+arg('i', {name: 'am'})
