@@ -73,8 +73,41 @@
 //   })
 //  })
 
-function arg(a, ...args) {
-  console.log(arguments);
-  console.log(...args);
+// function arg(a, ...args) {
+//   console.log(arguments);
+//   console.log(...args);
+// }
+// arg('i', {name: 'am'})
+
+// function create() {
+//   console.log(arguments[0])
+//   let Con = [].shift.call(arguments) // 这里是获取第一个参数
+//   console.log(Con)
+// }
+// function a() {
+//   console.log('i am a')
+// }
+// let a1 = create(a)
+
+function create() {
+  // 第一种情况直接让新创建的obj绑定传进来的函数的原型
+  let obj = { };
+  let construtor = [].shift.call(arguments)
+  obj.__proto__ = construtor.prototype
+  // 第二种让传进来的函数的this指向当前环境
+  let result = construtor.apply(this, arguments)
+  // 判断new 出来的是不是对象，new出来的必须是对象
+  return result instanceof Object ? result : obj
 }
-arg('i', {name: 'am'})
+
+function a() {
+  console.log('i is a');
+}
+
+let b = new a();
+
+console.log(b);
+
+let c = create(a);
+
+console.log(c);
