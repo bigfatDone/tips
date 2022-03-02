@@ -89,25 +89,46 @@
 // }
 // let a1 = create(a)
 
-function create() {
-  // 第一种情况直接让新创建的obj绑定传进来的函数的原型
-  let obj = { };
-  let construtor = [].shift.call(arguments)
-  obj.__proto__ = construtor.prototype
-  // 第二种让传进来的函数的this指向当前环境
-  let result = construtor.apply(this, arguments)
-  // 判断new 出来的是不是对象，new出来的必须是对象
-  return result instanceof Object ? result : obj
+// 实现一个new的思路
+// function create() {
+//   // 第一种情况直接让新创建的obj绑定传进来的函数的原型
+//   let obj = { };
+//   let construtor = [].shift.call(arguments)
+//   obj.__proto__ = construtor.prototype
+//   // 第二种让传进来的函数的this指向当前环境
+//   let result = construtor.apply(this, arguments)
+//   // 判断new 出来的是不是对象，new出来的必须是对象
+//   return result instanceof Object ? result : obj
+// }
+
+// function a() {
+//   console.log('i is a');
+// }
+
+// let b = new a();
+
+// console.log(b);
+
+// let c = create(a);
+
+// console.log(c);
+
+// proxy代理
+
+let a = {
+  name: 'zys',
+  age: '18'
 }
 
-function a() {
-  console.log('i is a');
-}
+let b = new Proxy(a, {
+  get: function(target, key) {
+    console.log(target, key)
+  },
+  set: function(target, key, value) {
+    console.log(value);
+  }
+})
 
-let b = new a();
-
+a.bus = 888
 console.log(b);
-
-let c = create(a);
-
-console.log(c);
+// b.bus
