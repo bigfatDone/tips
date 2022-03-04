@@ -8,18 +8,20 @@
 </head>
 <body>
   <h2>this is service worker</h2>
-  <script src="./ws.js"></script>
+  <!-- <script src="./ws.js"></script> -->
   <!-- // 必须https -->
   <script>
     if (navigator.serviceWorker) {
-      navigator.serviceWorker
-        .register('sw.js')
-        .then(function(registration) {
-          console.log('service worker 注册成功')
-        })
-        .catch(function(err) {
-          console.log('servcie worker 注册失败', err)
-        })
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('./sw.js')
+          .then(function(registration) {
+            console.log('service worker 注册成功')
+          })
+          .catch(function(err) {
+            console.log('servcie worker 注册失败', err)
+          })
+      })
     }
   </script>
 </body>
