@@ -115,20 +115,32 @@
 
 // proxy代理
 
-let a = {
-  name: 'zys',
-  age: '18'
-}
+// let a = {
+//   name: 'zys',
+//   age: '18'
+// }
 
-let b = new Proxy(a, {
-  get: function(target, key) {
-    console.log(target, key)
-  },
-  set: function(target, key, value) {
-    console.log(value);
-  }
-})
+// let b = new Proxy(a, {
+//   get: function(target, key) {
+//     console.log(target, key)
+//   },
+//   set: function(target, key, value) {
+//     console.log(value);
+//   }
+// })
 
-a.bus = 888
-console.log(b);
+// a.bus = 888
+// console.log(b);
 // b.bus
+
+
+// console.log(module.paths)
+
+function a () {
+  console.log('a');
+  return function () {
+    console.log('b');
+  }
+}
+a()
+console.log(a()());
