@@ -21,6 +21,12 @@ function readCode(filePath) {
     }
   })
   console.log(dependencies);
+
+   // 通过 AST 将代码转为 ES5
+  const { code } = transformFromAst(ast, null, {
+    presets: ['env']
+  })
+  console.log(code);
 }
 
 let a = path.resolve(__dirname, 'a.js')
