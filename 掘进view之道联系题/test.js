@@ -136,11 +136,13 @@
 
 // console.log(module.paths)
 
-function a () {
-  console.log('a');
-  return function () {
-    console.log('b');
-  }
-}
-a()
-console.log(a()());
+// function a () {
+//   console.log('a');
+//   return function () {
+//     console.log('b');
+//   }
+// }
+// a()
+// console.log(a()());
+
+console.log(Buffer('在'));
