@@ -145,4 +145,7 @@
 // a()
 // console.log(a()());
 
-console.log(Buffer('在'));
+// console.log(Buffer('在'));
+let a = {name: 'zys', age: 18}
+let c = new Proxy(a, {get: (target, key) => {target},get: (target, key, value) =>{value}})
+console.log(c.name)
