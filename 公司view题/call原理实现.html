@@ -11,7 +11,10 @@
 <body>
     <script>
         // 接收的参数(this, a1, a2...) ==> 会立即执行
-        Function.prototype.mycall = function(context){
+        Function.prototype.mycall = function (context) {
+            if(typeof this !== 'function'){ // 判断是否是函数，不是抛出异常
+                throw new TypeError('error')
+            }
             context = context || window; // 当前上下文的指向
             context.fn = this; // 给context创建一个fn属性，并且该属性为调用的函数
             const args = [...arguments].slice(1);// 传入的参数
@@ -19,6 +22,18 @@
             delete context.fn; // 删除对象上的函数
             return resurlt; // 返回调用函数
         }
+
+        // 示例
+        function Product(name, price) {
+            this.name = name;
+            this.price = price;
+        }
+
+        function food(name, price) {
+            Product.mycall(this, name, price);
+        }
+
+        console.log(new food('cheese', 5).name);
     </script>
 </body>
 

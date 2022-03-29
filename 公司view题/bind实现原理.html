@@ -10,31 +10,31 @@
     // 接收的参数(this, a1, a2...) ==> 不会立即执行，返回值
     // 复杂版
     Function.prototype.mybind = function(context) {
-      
       if(typeof this !== 'function'){ // 判断是否是函数，不是抛出异常
         throw new TypeError('error')
       }
-      var args = arguments.slice(1); // 获取参数
-      var _this = this;
+      const _this = this;
+      const args = [...arguments].slice(1); // 获取参数
       return function F() {
         if(this instanceof F){ // this 是F的实例化对象，直接返回new 一个对象
+          // 因为bind返回的是一个函数，函数在哪里执行不确定，如果是在同个作用域下执行，则直接返回
           return new _this(args,...arguments)
         }
         return _this.apply(context,args.concat(...arguments)) // 这个是this不指向指定函数，所以需要apply绑定修改this
       }
     }
 
-    // 简易版
-    Function.prototype.bind = function(context){
-      if(typeof(context) != 'function') {
-        throw new Error('no function')
-      }
-      let arg = arguments.slice(1);
-      let _this = this;
-      return function() {
-        _this.apply(context,arg.concat(arguments.slice(1)));
-      }
+    window.name = 'zys';
+    let obj = {
+        name: 'xiaoli',
+        myF: function (one, two) {
+            console.log(one + '---' + two)
+            console.log(this.name)
+        }
     }
+    // this指向window
+    let fn = obj.myF.mybind(this, 'one')
+    fn('two') // one---two   zys
   </script>
 </body>
 </html>

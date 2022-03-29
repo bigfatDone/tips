@@ -8,15 +8,27 @@
 <body>
   <script>
     
-    // 1. 创建新的对象
-    // 2. 链接到原型里面
-    // 3. 绑定this
-    // 4. 返回新建的对象
-    function myNew(fn,...arg){
-      let instance = Object.create(fn); // 通过create新建对象（这里实现继承）
-      let result = instance.call(fn,...arg) // 改变this的指向 （这里实现绑定this）
-      return typeof result == 'object' ? result : instance; // fn为对象返回对象，fn为function返回新建函数
+  // 1. 创建一个空的简单JavaScript对象（即{}）；~
+  // 2. 为步骤1新创建的对象添加属性__proto__，将该属性链接至构造函数的原型对象 ；
+  // 3. 将步骤1新创建的对象作为this的上下文 ；
+  // 4. 如果该函数没有返回对象，则返回this。
+    function myNew() {
+      let obj = {}
+      let Con = [].shift.call(arguments) // 将类数组转成数组，并且取出第一个参数
+      obj.__proto__ = Con.prototype // 将对象的隐性原型指向构造函数的原型对象
+      let result = Con.apply(obj, arguments) // 把创建对象作为this的上下文, arguments已经变成了数组并且头部第一个参数被取出
+      return result instanceof Object ? result : obj; // 应该返回对象
     }
+
+    function Car(make, model, year) {
+      this.make = make;
+      this.model = model;
+      this.year = year;
+    }
+
+    const car1 =myNew(Car, 'Eagle', 'Talon TSi', 1993);
+
+    console.log(car1.make) // 
   </script>
 </body>
 </html>

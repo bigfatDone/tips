@@ -4,9 +4,20 @@
   // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+
+
       {
           "name": "promise调试",
           "program": "${workspaceFolder}/掘进view之道联系题/11-手写promise/demo.js",
+          "request": "launch",
+          "skipFiles": [
+              "<node_internals>/**"
+          ],
+          "type": "pwa-node"
+      },
+      {
+          "name": "leetCode",
+          "program": "${workspaceFolder}/leetCode/5.最长回文子串.js",
           "request": "launch",
           "skipFiles": [
               "<node_internals>/**"

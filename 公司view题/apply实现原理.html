@@ -12,6 +12,9 @@
     <script>
         // 接收的参数(this, Array) ==> 会立即执行
         Function.prototype.myapply = function (context) {
+            if(typeof this !== 'function'){ // 判断是否是函数，不是抛出异常
+                throw new TypeError('error')
+            }
             context = context || window; // 当前上下文指向函数或者window
             context.fn = this; // 给当前添加属性fn，并且该属性为调用的函数，那么this就是指向当前的调用函数
             let resurlt;
@@ -24,19 +27,17 @@
             delete context.fn; // 删除原型链上的fn属性
             return resurlt;
         }
-        let name = 'ys';
-        let age = '18';
+        // 示例
+        window.name = 'zys';
         let obj = {
             name: 'xiaoli',
-            myF: function (name, age) {
-                console.log(this)
-                console.log(name + '---' + age)
+            myF: function (one, two) {
+                console.log(one + '---' + two)
+                console.log(this.name)
             }
         }
-        let myobj = [12, 78]
-        obj.myF(1, 2) // {name: "xiaoli", myF: ƒ}  this指向obj
-        obj.myF.myapply(this,
-        myobj) // Window {parent: Window, postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, …}  this指向window
+        let myobj = ['one', 'two']
+        obj.myF.myapply(this, myobj)
     </script>
 </body>
 
