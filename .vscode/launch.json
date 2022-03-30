@@ -17,7 +17,7 @@
       },
       {
           "name": "leetCode",
-          "program": "${workspaceFolder}/leetCode/5.最长回文子串.js",
+          "program": "${workspaceFolder}/leetCode/6. Z 字形变换.js",
           "request": "launch",
           "skipFiles": [
               "<node_internals>/**"
