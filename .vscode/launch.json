@@ -17,7 +17,7 @@
       },
       {
           "name": "leetCode",
-          "program": "${workspaceFolder}/leetCode/6. Z 字形变换.js",
+          "program": "${workspaceFolder}/leetCode/15. 三数之和.ts",
           "request": "launch",
           "skipFiles": [
               "<node_internals>/**"
