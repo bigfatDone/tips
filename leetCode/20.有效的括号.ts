@@ -11,16 +11,21 @@ function isValid(s: string): boolean {
     '{':'}',
     '[':']'
   }
-  if (!s || s.length % 2 != 0) {
-    return false
-  }
+  let stack = []
   let len = s.length
-  for (let i = 0; i < len / 2; i++) {
-    if (s[len - 1 - i] !== map[s[i]]) {
+
+  for (let i = 0; i < len; i++) {
+    if (map[s[i]] === ')') {
+      stack.push(')')
+    } else if (map[s[i]] === '}') {
+      stack.push('}')
+    } else if (map[s[i]] === ']') {
+      stack.push(']')
+    } else if(stack.pop() !== s[i]) {
       return false
     }
   }
-  return true
+  return stack.length === 0
 };
 // @lc code=end
 
