@@ -32,7 +32,7 @@ class Promise {
   }
 
   then(onFulfill, onReject) {
-    let promise1 = new Promise((resolve, reject) => {
+    let promise2 = new Promise((resolve, reject) => {
       let realOnFulfilled = onFulfill
       if ( typeof realOnFulfilled !== 'function') {
         realOnFulfilled = value => value
@@ -103,7 +103,14 @@ class Promise {
     })
     return promise
   }
-
+/**
+ * 
+ * @param {*} promise // 返回Promise2对象
+ * @param {*} x // 返回值
+ * @param {*} resolve // 成功回调
+ * @param {*} reject // 失败回调
+ * @returns 
+ */
   resolvePromise(promise, x, resolve, reject) {
     // 同一个promise
     if (promise === x) {
